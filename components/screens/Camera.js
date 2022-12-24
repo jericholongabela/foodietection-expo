@@ -1,22 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, ImageBackground } from "react-native";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { Camera, CameraType } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-import { StatusBar } from "expo-status-bar";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
+import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 
 import colors from "../../assets/styles/colors";
 import NavigationBar from "../modules/NavigationBar";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Context } from "../global_context/GlobalContext";
+import { getModel, convertBase64ToTensor, startPrediction } from "../backend/model";
+import { cropPicture } from "../backend/image-resizer";
+
+const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bicol Express", "Bulalo", "Champorado",
+                    "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Fried Rice", "Grapes", 
+                    "Halo Halo", "Kaldereta", "Kiwi", "Laing", "Leche Flan", "Lemon", "Liempo", "Longganisa", "Lumpia",
+                    "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
+                    "Pork Afritada", "Rambutan", "Sisig", "Tinolang Manok", "Turon"]
 
 export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
     const [ image, setImage ] = useState(null);
     const [ type, setType ] = useState(Camera.Constants.Type.back);
+    const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
+    const { loadingModel, setLoadingModel } = useContext(Context);
+    const { isPredicting, setIsPredicting } = useContext(Context);
+
+    const [ predictedResult, setPredictedResult ] = useState("");
+
+    // for loading the model
+    const modelJson = require('../../assets/model/model.json');
+    const modelWeights = require('../../assets/model/mobilenet.bin');
 
     useEffect(() => {
         (async () => {
@@ -35,9 +56,10 @@ export default function Cam(){
 
     const takePicture = async () => {
         if(cameraRef){
-            const data = await cameraRef.current.takePictureAsync();
-            setImage(data.uri);
-            console.log(data.uri);
+            const data = await cameraRef.current.takePictureAsync({
+                based64: true,
+            });
+            processImagePrediction(data);
         }
     }
 
@@ -57,17 +79,37 @@ export default function Cam(){
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: false,
-            aspect: [4, 3],
+            base64: true,
             quality: 1,
         });
 
         console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            processImagePrediction(result);
         } else {
             console.log("Image selection cancelled")
         }
+    }
+
+    const processImagePrediction = async (base64Image) => {
+        const croppedData = await cropPicture(base64Image, 300);
+        // const tensor = convertBase64ToTensor(croppedData.base64);
+        // const prediction = await startPrediction(model, tensor);
+        // const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
+        // setPredictedResult(FOOD_CLASSES[highestProbability]);
+        // console.log(predictedResult);
+
+        const model = await getModel();
+        setLoadingModel(false);
+        const tensor = convertBase64ToTensor(croppedData.base64);
+
+        setIsPredicting(true);
+        const prediction = await startPrediction(model, tensor);
+        setIsPredicting(false);
+        const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
+        setPredictedResult(FOOD_CLASSES[highestProbability]);
+        console.log(predictedResult);
     }
 
     return (
@@ -78,6 +120,7 @@ export default function Cam(){
                 style={styles.camera}
                 type={type}
                 ref={cameraRef}
+                autoFocus={true}
             >
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={() => {
@@ -99,6 +142,7 @@ export default function Cam(){
             </Camera>
             :
             (
+            loadingModel || isPredicting ? <ActivityIndicator size="large" color={colors.primary_white} /> :
             <ImageBackground source={{uri : image}} style={styles.camera} >
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
