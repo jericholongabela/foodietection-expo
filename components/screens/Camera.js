@@ -94,14 +94,8 @@ export default function Cam(){
 
     const processImagePrediction = async (base64Image) => {
         const croppedData = await cropPicture(base64Image, 300);
-        // const tensor = convertBase64ToTensor(croppedData.base64);
-        // const prediction = await startPrediction(model, tensor);
-        // const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
-        // setPredictedResult(FOOD_CLASSES[highestProbability]);
-        // console.log(predictedResult);
 
         const model = await getModel();
-        setLoadingModel(false);
         const tensor = convertBase64ToTensor(croppedData.base64);
 
         setIsPredicting(true);
