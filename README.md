@@ -24,5 +24,6 @@ type group1-shard1of3.bin group1-shard2of3.bin group1-shard3of3.bin > mobilenetv
 # Steps to re-train
 1. Re-train the model with batch size 8, 1k steps.
 2. Export the Model. Dapat wala yung error, dapat may lumabas na *Serve* folder. **This is what is needed to be fix before continuing sa conversion.**
+// Kahit wag na muna magconvert, goal lang talaga tong number 2.
 3. Converting model see: [[#Converting model into TFLite-ready Model]]
 4. Merge bin files see: [[#Merging .bin files into one file]]
