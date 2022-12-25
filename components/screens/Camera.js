@@ -31,13 +31,13 @@ export default function Cam(){
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
     const { loadingModel, setLoadingModel } = useContext(Context);
-    const { isPredicting, setIsPredicting } = useContext(Context);
+    const [ isPredicting, setIsPredicting ] = useState(false);
 
     const [ predictedResult, setPredictedResult ] = useState("");
 
     // for loading the model
     const modelJson = require('../../assets/model/model.json');
-    const modelWeights = require('../../assets/model/mobilenet.bin');
+    const modelWeights = require('../../assets/model/mobilenetv3.bin');
 
     useEffect(() => {
         (async () => {
@@ -59,7 +59,7 @@ export default function Cam(){
             const data = await cameraRef.current.takePictureAsync({
                 based64: true,
             });
-            processImagePrediction(data);
+            console.log("Taken image is: ", data);
         }
     }
 
@@ -83,27 +83,47 @@ export default function Cam(){
             quality: 1,
         });
 
-        console.log(result);
-
-        if (!result.canceled) {
-            processImagePrediction(result);
+        if (!result.canceled && result!=null) {
+            setIsPredicting(true);
+            console.log("Is Predicting? ", isPredicting);
+            await processImagePrediction(result.assets[0]);
+            setIsPredicting(false);
+            console.log("Is Predicting? ", isPredicting);
         } else {
             console.log("Image selection cancelled")
         }
     }
 
     const processImagePrediction = async (base64Image) => {
-        const croppedData = await cropPicture(base64Image, 300);
-
         const model = await getModel();
+        const croppedData = await cropPicture(base64Image);
+        setImage(croppedData.uri);
         const tensor = convertBase64ToTensor(croppedData.base64);
+        console.log(tensor);
+        console.log("Tensor z is: ", tensor._z);
+        const output = model.executeAsync(tensor._z).then((output) => {
+            console.log("Output is ", output);
+        });
+        
 
-        setIsPredicting(true);
-        const prediction = await startPrediction(model, tensor);
-        setIsPredicting(false);
-        const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
-        setPredictedResult(FOOD_CLASSES[highestProbability]);
-        console.log(predictedResult);
+        // model.detect(tensor).then((predictions) => {
+        //     // Drawing the rectangles
+
+        // }).catch((Error) => {
+        //     console.log(Error);
+        // });
+
+        // setIsPredicting(true);
+        // const prediction = await startPrediction(model, tensor);
+        // setIsPredicting(false);
+        // const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
+        // setPredictedResult(FOOD_CLASSES[highestProbability]);
+        // console.log(predictedResult);
+        //requestAnimationFrame(processImagePrediction);
+    }
+
+    function drawBoundingBox(prediction, image){
+
     }
 
     return (
@@ -137,7 +157,8 @@ export default function Cam(){
             :
             (
             loadingModel || isPredicting ? <ActivityIndicator size="large" color={colors.primary_white} /> :
-            <ImageBackground source={{uri : image}} style={styles.camera} >
+            //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
+            <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="contain" >
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
                         <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
@@ -187,5 +208,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
+    },
+    canvas: {
+        
     },
 });

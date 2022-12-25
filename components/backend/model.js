@@ -6,11 +6,10 @@ import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 
 import { Base64Binary } from './utils';
 import { Context } from '../global_context/GlobalContext';
-
-const BITMAP_DIMENSION = 224;
+import { BITMAP_DIMENSION } from './image-resizer';
 
 const modelJson = require('../../assets/model/model.json');
-const modelWeights = require('../../assets/model/mobilenet.bin');
+const modelWeights = require('../../assets/model/mobilenetv3.bin');
 
 // 0: channel from JPEG-encoded image
 // 1: gray scale
@@ -43,7 +42,11 @@ export const convertBase64ToTensor = async (base64) => {
 export const startPrediction = async (model, tensor) => {
     try{
         //predict against the model
-        const output = await model.predict(tensor);
+        const output = await model.detect(tensor).then(
+            (prediction) => {
+                
+            }
+        );
         //return typed array
         return output.dataSync();
     } catch (error) {
