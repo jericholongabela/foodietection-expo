@@ -21,7 +21,7 @@ export const getModel = async () => {
         // wait until tensorflow is ready
         await tf.ready();
         // load the trained model
-        return await tf.loadGraphModel("https://raw.githubusercontent.com/hugozanini/TFJS-object-detection/master/models/kangaroo-detector/model.json");
+        return await tf.loadGraphModel("https://raw.githubusercontent.com/maxnuggets/foodietection-expo/main/assets/model-model/jdjljsjs/model.json");
     } catch (error) {
         console.log("Cannot load model. There has been an error: ", error);
     }
