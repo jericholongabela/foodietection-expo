@@ -103,6 +103,7 @@ export default function Cam(){
         console.log("Tensor z is: ", tensor._z);
         const output = model.executeAsync(tensor._z).then((output) => {
             console.log("Output is ", output);
+            console.log("Class is : ", output[6].arraySync());
         });
         
 

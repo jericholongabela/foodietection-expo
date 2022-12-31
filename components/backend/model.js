@@ -21,7 +21,7 @@ export const getModel = async () => {
         // wait until tensorflow is ready
         await tf.ready();
         // load the trained model
-        return await tf.loadGraphModel("https://raw.githubusercontent.com/maxnuggets/foodietection-expo/main/assets/model-model/jdjljsjs/model.json");
+        return await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeights));;
     } catch (error) {
         console.log("Cannot load model. There has been an error: ", error);
     }
