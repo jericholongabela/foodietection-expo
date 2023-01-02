@@ -97,13 +97,18 @@ export default function Cam(){
     const processImagePrediction = async (base64Image) => {
         const model = await getModel();
         const croppedData = await cropPicture(base64Image);
-        setImage(croppedData.uri);
+        setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(croppedData.base64);
-        console.log(tensor);
-        console.log("Tensor z is: ", tensor._z);
         const output = model.executeAsync(tensor._z).then((output) => {
-            console.log("Output is ", output);
-            console.log("Class is : ", output[6].arraySync());
+            const boxes = output[2].arraySync();
+            const scores = output[5].arraySync();
+            const classes = output[3].dataSync();
+            console.log('Boxes-x: ',boxes[0][0][0]);
+            console.log('Boxes-y: ',boxes[0][0][1]);
+            console.log('Boxes-width: ',boxes[0][0][2]);
+            console.log('Boxes-height: ',boxes[0][0][3]);
+            console.log('scores: ',scores[0][0]);
+            console.log('Classes: ',classes[0]);
         });
         
 
