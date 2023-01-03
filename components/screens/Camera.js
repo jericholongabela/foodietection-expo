@@ -16,6 +16,9 @@ import NavigationBar from "../modules/NavigationBar";
 import { Context } from "../global_context/GlobalContext";
 import { getModel, convertBase64ToTensor, startPrediction } from "../backend/model";
 import { cropPicture } from "../backend/image-resizer";
+import { SafeAreaView } from 'react-native';
+import Canvas from 'react-native-canvas';
+
 
 const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bicol Express", "Bulalo", "Champorado",
                     "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Fried Rice", "Grapes", 
@@ -27,6 +30,7 @@ export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
     const [ image, setImage ] = useState(null);
+    const [ imagess, setImagess ] = useState(null);
     const [ type, setType ] = useState(Camera.Constants.Type.back);
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
@@ -47,6 +51,18 @@ export default function Cam(){
             setHasMediaLibraryPermission(MediaLibraryPermission.status === "granted");
         })();
     }, []);
+
+    const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      const ctx = ref.current.getContext('2d');
+      ctx.fillStyle = "red";
+      ctx.lineWidth = 2;
+      ctx.fillRect(44.05709226348183, 19.82166897166859, 459.288959312438, 378.8671536879106);
+    }
+  }, [ref]);
+
 
     if (hasCameraPermission === undefined) {
         return <Text>No access to camera</Text>
@@ -97,18 +113,22 @@ export default function Cam(){
     const processImagePrediction = async (base64Image) => {
         const model = await getModel();
         const croppedData = await cropPicture(base64Image);
-        setImage(base64Image.uri);
+        setImage(croppedData.uri);
         const tensor = convertBase64ToTensor(croppedData.base64);
         const output = model.executeAsync(tensor._z).then((output) => {
-            const boxes = output[2].arraySync();
+            const boxes = output[1].arraySync();
             const scores = output[5].arraySync();
             const classes = output[3].dataSync();
-            console.log('Boxes-x: ',boxes[0][0][0]);
-            console.log('Boxes-y: ',boxes[0][0][1]);
-            console.log('Boxes-width: ',boxes[0][0][2]);
-            console.log('Boxes-height: ',boxes[0][0][3]);
+            console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+            console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+            console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7);
+            console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width);
             console.log('scores: ',scores[0][0]);
             console.log('Classes: ',classes[0]);
+            console.log(Dimensions.get('window').width);
+            console.log(Dimensions.get('window').height * 0.7);
+
+
         });
         
 
@@ -164,7 +184,17 @@ export default function Cam(){
             (
             loadingModel || isPredicting ? <ActivityIndicator size="large" color={colors.primary_white} /> :
             //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
-            <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="contain" >
+            //bale dito ang goal, gumawa ng container tapos ilagay don yung image sa loob or gawing background
+            //tapos lalagyan mo ng canvas na dapat same height and width don sa ng image
+            //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
+            //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
+            //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
+            <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="center" >
+                <View style={{width: '100%', height: '100%', backgroundColor:'yellow',}}>
+                    <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="contain">
+                        <Canvas style={{ width: 285, height: 285, backgroundColor: 'transparent' }} ref={ref} />
+                    </ImageBackground>
+                </View>
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
                         <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
