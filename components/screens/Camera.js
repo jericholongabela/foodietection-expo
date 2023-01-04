@@ -30,8 +30,10 @@ export default function Cam(){
     const [ type, setType ] = useState(Camera.Constants.Type.back);
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
-    const { loadingModel, setLoadingModel } = useContext(Context);
     const [ isPredicting, setIsPredicting ] = useState(false);
+
+    // globalcontexts
+    const { loadingModel, setLoadingModel } = useContext(Context);
 
     const [ predictedResult, setPredictedResult ] = useState("");
 
@@ -96,9 +98,9 @@ export default function Cam(){
 
     const processImagePrediction = async (base64Image) => {
         const model = await getModel();
-        const croppedData = await cropPicture(base64Image);
-        setImage(croppedData.uri);
-        const tensor = convertBase64ToTensor(croppedData.base64);
+        //const croppedData = await cropPicture(base64Image);
+        //setImage(croppedData.uri);
+        const tensor = convertBase64ToTensor(base64Image.base64);
         console.log(tensor);
         console.log("Tensor z is: ", tensor._z);
         const output = model.executeAsync(tensor._z).then((output) => {

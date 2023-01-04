@@ -6,7 +6,6 @@ import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 
 import { Base64Binary } from './utils';
 import { Context } from '../global_context/GlobalContext';
-import { BITMAP_DIMENSION } from './image-resizer';
 
 const modelJson = require('../../assets/model/model.json');
 const modelWeights = require('../../assets/model/mobilenetv3.bin');
@@ -33,7 +32,7 @@ export const convertBase64ToTensor = async (base64) => {
         //decode a jpeg-encoded image to a 3d tensor of dtype
         const decodedImage = decodeJpeg(uIntArray, 3);
         //reshape into a 4d array
-        return decodedImage.reshape([1, BITMAP_DIMENSION, BITMAP_DIMENSION, TENSORFLOW_CHANNEL]);
+        return decodedImage.reshape([1, decodedImage.shape[0], decodedImage.shape[1], TENSORFLOW_CHANNEL]);
     } catch (error) {
         console.log("Cannot convert base64 to tensor. There has been an error: ", error);
     }
