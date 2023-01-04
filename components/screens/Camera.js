@@ -57,9 +57,12 @@ export default function Cam(){
   useEffect(() => {
     if (ref.current) {
       const ctx = ref.current.getContext('2d');
-      ctx.fillStyle = "red";
-      ctx.lineWidth = 2;
-      ctx.fillRect(44.05709226348183, 19.82166897166859, 459.288959312438, 378.8671536879106);
+      ctx.strokeStyle = "black";
+      Canvas.width = 500;
+      Canvas.height = 400;
+      ctx.lineWidth = 4;
+      ctx.strokeRect(10,10, 100,100);
+      ctx.strokeRect(70,90, 100,100);
     }
   }, [ref]);
 
@@ -121,8 +124,8 @@ export default function Cam(){
             const classes = output[3].dataSync();
             console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
             console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-            console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7);
-            console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width);
+            console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+            console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
             console.log('scores: ',scores[0][0]);
             console.log('Classes: ',classes[0]);
             console.log(Dimensions.get('window').width);
@@ -191,8 +194,10 @@ export default function Cam(){
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
             <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="center" >
                 <View style={{width: '100%', height: '100%', backgroundColor:'yellow',}}>
-                    <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="contain">
-                        <Canvas style={{ width: 285, height: 285, backgroundColor: 'transparent' }} ref={ref} />
+                    <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="cover">
+                        
+                            <Canvas style={{backgroundColor: 'red'}} ref={ref} />
+    
                     </ImageBackground>
                 </View>
                 <View style={styles.cameraButtonsContainer}>
