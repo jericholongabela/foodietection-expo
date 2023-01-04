@@ -24,7 +24,7 @@
       ]
     ],
     "assetBundlePatterns": [
-      "**/*"
+      "**/*", ".bin"
     ],
     "ios": {
       "supportsTablet": true
