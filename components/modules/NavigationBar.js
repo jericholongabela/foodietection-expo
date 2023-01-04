@@ -16,7 +16,7 @@ export default function NavigationBar( {} ){
                 <TouchableOpacity onPress={()=> navigation.navigate("Camera")} style={styles.buttonContainer}>
                     <Icon name="photo-camera" style={styles.icon} size={25} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonContainer}>
+                <TouchableOpacity onPress={()=> navigation.navigate("Search")} style={styles.buttonContainer}>
                     <Icon name="search" style={styles.icon} size={25} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonContainer}>
