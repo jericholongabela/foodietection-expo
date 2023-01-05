@@ -12,8 +12,10 @@ const overlayStyles = StyleSheet.create({
     textStyle: {
         //fontFamily: 'Montserrat-regular',
         fontSize: 18,
-        paddingRight: 30,
+        paddingLeft: 5,
+        paddingRight: 10,
         color: colors.primary_black,
+        textAlign: 'justify',
     },
 });
 
