@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ActivityIndicator } from 'react-native'
+import { Overlay } from '@rneui/base'
 import colors from '../../assets/styles/colors'
 
 import overlayStyles from '../../assets/styles/overlay';
