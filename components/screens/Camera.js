@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 import { Camera, CameraType } from "expo-camera";
 import { shareAsync } from "expo-sharing";
@@ -38,12 +39,11 @@ export default function Cam(){
 
     // globalcontexts
     const { loadingModel, setLoadingModel } = useContext(Context);
+    const { predictedResult, setPredictedResult } = useContext(Context);
 
-    const [ predictedResult, setPredictedResult ] = useState("");
-
-    // for loading the model
-    const modelJson = require('../../assets/model/model.json');
-    const modelWeights = require('../../assets/model/mobilenetv3.bin');
+    const ref = useRef(null);
+    const imgRef = useRef(null);
+    const navigation = useNavigation();
 
     useEffect(() => {
         (async () => {
@@ -53,8 +53,6 @@ export default function Cam(){
             setHasMediaLibraryPermission(MediaLibraryPermission.status === "granted");
         })();
     }, []);
-
-    const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -94,6 +92,7 @@ export default function Cam(){
                 console.log(e);
             }
         }
+        navigation.navigate("Meal Information");
     }
 
     const selectImage = async () => {
@@ -123,19 +122,21 @@ export default function Cam(){
         console.log(tensor);
         console.log("Tensor z is: ", tensor._z);
         const output = model.executeAsync(tensor._z).then((output) => {
-            const boxes = output[1].arraySync();
-            const scores = output[5].arraySync();
-            const classes = output[3].dataSync();
-            console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
-            console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-            console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
-            console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
-            console.log('scores: ',scores[0][0]);
-            console.log('Classes: ',classes[0]);
-            console.log(Dimensions.get('window').width);
-            console.log(Dimensions.get('window').height * 0.7);
-
-
+            // const boxes = output[1].arraySync();
+            // const scores = output[5].arraySync();
+            // const classes = output[3].dataSync();
+            // console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+            // console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+            // console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+            // console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
+            // console.log('scores: ',scores[0][0]);
+            // console.log('Classes: ',classes[0]);
+            // console.log(Dimensions.get('window').width);
+            // console.log(Dimensions.get('window').height * 0.7);
+            renderPredictions(output);
+            predictedResult.forEach((prediction, i) => {
+                setQuery((query) => [...query, prediction[i].label]);
+            });
         });
         
 
@@ -155,9 +156,43 @@ export default function Cam(){
         //requestAnimationFrame(processImagePrediction);
     }
 
-    function drawBoundingBox(prediction, image){
+    const renderPredictions = (output) => {
+        const boxes = output[1].arraySync();
+        const scores = output[5].arraySync();
+        const classes = output[3].dataSync();
+        const threshold = 0.5;
+        const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
 
+        setPredictedResult(detections);
+        console.log("Detections: ", detections);
     }
+
+    function buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES) {
+        const detectionObjects = [];
+    
+        scores[0].forEach((score, i) => {
+          if (score > threshold) {
+            const bbox = [];
+            // const minY = boxes[0][i][0] * imgRef.offsetTop;
+            // const minX = boxes[0][i][1] * imgRef.offsetLeft;
+            const minY = boxes[0][i][0];
+            const minX = boxes[0][i][1];
+            const maxY = boxes[0][i][2];
+            const maxX = boxes[0][i][3];
+            bbox[0] = minX;
+            bbox[1] = minY;
+            bbox[2] = maxX - minX;
+            bbox[3] = maxY - minY;
+            detectionObjects.push({
+              class: classes[i],
+              label: FOOD_CLASSES[classes[i] - 1],
+              score: score.toFixed(4),
+              bbox: bbox
+            })
+          }
+        })
+        return detectionObjects
+      }
 
     return (
         <View style={styles.screen}>
@@ -196,27 +231,21 @@ export default function Cam(){
             //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
-            <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="center" >
-                <View style={{width: '100%', height: '100%', backgroundColor:'yellow',}}>
-                    <ImageBackground source={{uri : image}} style={styles.camera} resizeMode="cover">
-                        
-                            <Canvas style={{backgroundColor: 'red'}} ref={ref} />
-    
-                    </ImageBackground>
-                </View>
+            <View>
+                <Image source={{uri : image}} style={styles.camera} ref={imgRef} />
+                <Canvas style={styles.canvas} ref={ref} ></Canvas>
+            </View>
+            )}
+            <View style={styles.resultContainer}>
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
                         <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={saveImage}>
-                        <MaterialCommunityIcons name="check-circle-outline" size={60} color={colors.green_shade_2} /> 
+                        <MaterialCommunityIcons name="check-circle-outline" size={60} 
+                        color={colors.green_shade_2}/> 
                     </TouchableOpacity>
                 </View>
-            </ImageBackground>
-            )
-            }
-            <View style={styles.resultContainer}>
-                <Text style={styles.resultText}>Capture to scan</Text>
             </View>
             <NavigationBar />
         </View>
@@ -254,7 +283,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
     },
+    image : {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height * 0.7,
+    },
     canvas: {
-        
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height * 0.7,
     },
 });
