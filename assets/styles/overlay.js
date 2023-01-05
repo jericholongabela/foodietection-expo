@@ -3,13 +3,14 @@ import colors from './colors';
 
 const overlayStyles = StyleSheet.create({
     overlay: {
-        width: Dimensions.get('window').width * 0.93,
+        width: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').height * 0.9,
+        borderRadius: 10,
         backgroundColor: colors.primary_white,
     },
 
     textStyle: {
-        fontFamily: 'Montserrat-regular',
+        //fontFamily: 'Montserrat-regular',
         fontSize: 18,
         paddingRight: 30,
         color: colors.primary_black,
