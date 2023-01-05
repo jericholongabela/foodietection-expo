@@ -36,12 +36,17 @@ export default function WhatApp({ text, color, img, imgStyle, imgContainerStyle,
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum in magna a suscipit. 
-                                Aenean eget laoreet ipsum. Aenean a lacinia lorem. Donec mattis, dolor eu rhoncus semper, nisl justo pharetra turpis, et luctus ipsum turpis eleifend elit. 
+                                This application is called Foodietection.
+                                {'\n\n'}
+                                The app is made by 4th year students of Polytechnic University of the Philippines-College of Computer and Information Sciences.
+                                {'\n\n'}
+                                This application is made in partial fulfillment of the requirement for the Degree of Bachelor of Science in Computer Science.
+                                {'\n\n'}
+                                This application is made to supplement the dissemination of Food nutrition information to the users.
                             </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
@@ -84,14 +89,13 @@ export function PurposeApp({ text, color, img, imgStyle, imgContainerStyle, }){
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                1
+                                The purpose of this application is to supplement the relevant food information that the user needs. As we know, information is readily available online but few are actively looking for it. 
+                                {'\n\n'}
+                                This application was made by the proponents so that it will be easier for the users to get relevant nutritional information of their food just by using their phone camera.
                             </Text>
-                            <Text>
-
-                            </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
@@ -134,14 +138,25 @@ export function DevApp({ text, color, img, imgStyle, imgContainerStyle, }){
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                2
+                                Who are the developers?
+                                {'\n\n'}
+                                The developers of this app are 4th Year BSCS students of Polytechnic University of the Philippines.
+                                {'\n\n'}
+                                They are:
+                                {'\n'}
+                                Mark Vincent Divida
+                                {'\n'}
+                                Jessie Kadusale
+                                {'\n'}
+                                Miguel Andrei Liwanag
+                                {'\n'}
+                                Jericho Longabela
+                                {'\n\n'}
+                                This app was developed by them as a partial completion for the degree of Computer Science.
                             </Text>
-                            <Text>
-
-                            </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
@@ -184,14 +199,11 @@ export function Fnri({ text, color, img, imgStyle, imgContainerStyle, }){
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
                                 3
                             </Text>
-                            <Text>
-
-                            </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
@@ -234,14 +246,11 @@ export function Ggg({ text, color, img, imgStyle, imgContainerStyle, }){
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
                                 4
                             </Text>
-                            <Text>
-
-                            </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
@@ -284,14 +293,11 @@ export function Nutrifact({ text, color, img, imgStyle, imgContainerStyle, }){
                         </View>
                     </View>
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                        <Text style={overlayStyles.overlay}> 
+                        <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
                                 5
                             </Text>
-                            <Text>
-
-                            </Text>
-                        </Text>
+                        </View>
                      </Overlay>
                 </TouchableOpacity>
             )}
