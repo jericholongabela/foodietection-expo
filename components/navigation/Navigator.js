@@ -79,17 +79,7 @@ export default function Navigator(props) {
                     fontWeight: 'bold',
                     color: colors.primary_white,
                 }}} />
-            <Stack.Screen name="Search" component={Search} options={{
-                headerShown:true,
-                title: 'Search for Food',
-                headerStyle: {
-                    backgroundColor: colors.primary_white,
-                },
-                headerTitleStyle: {
-                    color: colors.primary_black,
-                    fontSize: 24,
-                }
-                }} />
+           
         </Stack.Navigator>
     );
 }

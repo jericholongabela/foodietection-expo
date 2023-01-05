@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
@@ -117,17 +117,15 @@ export default function Cam(){
     const processImagePrediction = async (base64Image) => {
         const model = await getModel();
         //const croppedData = await cropPicture(base64Image);
-        //setImage(croppedData.uri);
+        setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
-        console.log(tensor);
-        console.log("Tensor z is: ", tensor._z);
         const output = model.executeAsync(tensor._z).then((output) => {
-            // const boxes = output[1].arraySync();
-            // const scores = output[5].arraySync();
-            // const classes = output[3].dataSync();
-            // console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
-            // console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-            // console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+             const boxes = output[1].arraySync();
+             const scores = output[5].arraySync();
+             const classes = output[3].dataSync();
+             console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+             console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+             console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
             // console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
             // console.log('scores: ',scores[0][0]);
             // console.log('Classes: ',classes[0]);
@@ -231,9 +229,10 @@ export default function Cam(){
             //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
-            <View>
-                <Image source={{uri : image}} style={styles.camera} ref={imgRef} />
+            <View styles = {styles.camera}>
+                <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
                 <Canvas style={styles.canvas} ref={ref} ></Canvas>
+                </ImageBackground>
             </View>
             )}
             <View style={styles.resultContainer}>
