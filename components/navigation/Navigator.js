@@ -9,6 +9,7 @@ import { useFonts } from 'expo-font';
 import Home from "../screens/Home";
 import Cam from "../screens/Camera";
 import MealInfo from "../screens/MealInformation";
+import Search from "../screens/Search";
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,15 @@ export default function Navigator(props) {
                 },
                 headerTitleStyle: {
                     color: colors.primary_white,
+                }}} />
+            <Stack.Screen name="Search" component={Search} options={{
+                headerShown:true,
+                title: 'Search for Food',
+                headerStyle: {
+                    backgroundColor: colors.primary_white,
+                },
+                headerTitleStyle: {
+                    color: colors.primary_black,
                     fontSize: 24,
                 }
                 }} />
