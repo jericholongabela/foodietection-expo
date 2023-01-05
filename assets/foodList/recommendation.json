@@ -1,0 +1,37 @@
+{
+   "Go": [
+        {"food_name": "Bread"},
+        {"food_name": "Pasta"},
+        {"food_name": "Rice"},
+        {"food_name": "Cereal"},
+        {"food_name": "Potato"},
+        {"food_name": "Jam"},
+        {"food_name": "Pizza"},
+        {"food_name": "Cookies"},
+        {"food_name": "Cake"}
+   ],
+
+   "Grow": [
+        {"food_name": "Milk"},
+        {"food_name": "Cheese"},
+        {"food_name": "Yogurt"},
+        {"food_name": "Egg"},
+        {"food_name": "Pork"},
+        {"food_name": "Chicken"},
+        {"food_name": "Fish"},
+        {"food_name": "Peas"},
+        {"food_name": "Nuts"}
+    ],
+
+    "Glow": [
+        {"food_name": "Brocolli"},
+        {"food_name": "Apple"},
+        {"food_name": "Lettuce"},
+        {"food_name": "Cabbage"},
+        {"food_name": "Avocado"},
+        {"food_name": "Grapes"},
+        {"food_name": "Soymilk"},
+        {"food_name": "Soybean"},
+        {"food_name": "Scallops"}
+    ]
+}

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     headerText: {
-        fontFamily: 'Montserrat-Bold',
+        //fontFamily: 'Montserrat-Bold',
         fontSize: 25,
         color: colors.primary_black,
     },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.pink
     },
     buttonTextStyle: {
-        fontFamily: 'Montserrat-Bold',
+        //fontFamily: 'Montserrat-Bold',
         fontSize: 18,
         color: colors.primary_white,
     },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     backTextStyle: {
-        fontFamily: 'Montserrat',
+        //fontFamily: 'Montserrat',
         fontSize: 18,
         color: colors.primary_black,
     },
