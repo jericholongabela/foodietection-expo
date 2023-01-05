@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { SafeAreaView, View, Text, TextInput, ScrollView, Dimensions, FlatList, Image } from 'react-native'
 
 import Header from '../modules/Header'
 import mealinfoStyles from '../../assets/styles/mealinformation'
 import MealCard, { ViewSuggestion } from '../modules/MealCard';
-import colors from '../../assets/styles/colors'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import daily_value from '../fuzzy/daily_value';
-import fuzzy from '../fuzzy/fuzzy';
+import { Context } from "../global_context/GlobalContext";
 
 export default function MealInformation( props, ){
     const { 
@@ -19,9 +17,12 @@ export default function MealInformation( props, ){
     const [calories, setCalories] = useState(0);
     const [filename = 'filename.jpg', setFilename] = useState();
     const [category, setCategory] = useState();
-    const [foodImage, setFoodImage] = useState();
+    const [ query, setQuery ] = useState([]);
     let [isLoading, setLoading] = useState(true);
     let [error, setError] = useState();
+
+    const { predictedResult, setPredictedResult } = useContext(Context);
+    console.log(predictedResult);
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
@@ -29,7 +30,7 @@ export default function MealInformation( props, ){
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": 'Tinola, Rice'});
+    let jsonQuery = JSON.stringify({"query": predictedResult[0].label});
 
     let request = new Request (url, {
         method: 'POST',

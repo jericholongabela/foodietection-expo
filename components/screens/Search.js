@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { SafeAreaView, View, Text, TextInput, StyleSheet, Dimensions, ActivityIndicator, FlatList } from 'react-native'
 
 import NavigationBar from '../modules/NavigationBar'
-import SearchResult from '../modules/SearchResult'
+import SearchResult from '../modules/searchResult'
 import colors from '../../assets/styles/colors'
 
 export default function Search( props ){
@@ -67,9 +67,9 @@ export default function Search( props ){
                         <FlatList 
                             contentContainerStyle={styles.list}
                             data={data}
-                            keyExtractor={({ food_name }) => food_name}
+                            keyExtractor={( item ) => {item.tag_id, item.food_name}}
                             renderItem={({ item }) => (
-                                <SearchResult foodName={item.food_name} />
+                                <SearchResult foodName={item.food_name}  />
                             )}
                         />
                     )}

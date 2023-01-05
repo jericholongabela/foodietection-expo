@@ -118,19 +118,19 @@ const styles = StyleSheet.create({
         borderColor: colors.gray_shade_1
     }, 
     textStyle: {
-        fontFamily: 'Montserrat-Bold',
+        //fontFamily: 'Montserrat-Bold',
         fontSize: 18,
         paddingLeft: 5,
         color: colors.primary_black,
     },
     regulartextStyle: {
-        fontFamily: 'Montserrat',
+        //fontFamily: 'Montserrat',
         fontSize: 15,
         paddingLeft: 5,
         color: colors.primary_black,
     },
     servingtextStyle: {
-        fontFamily: 'Montserrat',
+        //fontFamily: 'Montserrat',
         fontSize: 14,
         paddingLeft: 5,
         color: colors.gray_shade_4,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     foodCategoryText: {
-        fontFamily: 'Montserrat-Bold',
+        //fontFamily: 'Montserrat-Bold',
         fontSize: 17,
         color: colors.primary_black,
     },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
-        fontFamily: 'Montserrat-Bold',
+        //fontFamily: 'Montserrat-Bold',
         fontSize: 19,
         paddingRight: 30,
         color: colors.primary_black,

@@ -6,6 +6,7 @@ const Provider = ( { children } ) => {
     const [ galleryPhoto, setGalleryPhoto ] = useState("");
     const [ loadingModel, setLoadingModel ] = useState(false);
     const [ isPredicting, setIsPredicting ] = useState(false);
+    const [ predictedResult, setPredictedResult ] = useState([]);
 
     const globalContext = {
         galleryPhoto,
@@ -14,6 +15,8 @@ const Provider = ( { children } ) => {
         setLoadingModel,
         isPredicting,
         setIsPredicting,
+        predictedResult, 
+        setPredictedResult,
     }
 
     return <Context.Provider value={globalContext}>
