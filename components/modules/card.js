@@ -201,7 +201,11 @@ export function Fnri({ text, color, img, imgStyle, imgContainerStyle, }){
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
                         <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                3
+                            The Food and Nutrition Research Institute (FNRI) undertakes researches that define the citizenry’s
+                            nutritional status, with reference particularly to the malnutrition problem, its causes and effects;
+                            develops and recommends policy options, strategies, programs and projects which address the
+                            malnutrition problem for implementation by appropriate agencies. It disseminates its research findings
+                            and recommendations to relevant end-users.
                             </Text>
                         </View>
                      </Overlay>
@@ -248,7 +252,13 @@ export function Ggg({ text, color, img, imgStyle, imgContainerStyle, }){
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
                         <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                4
+                            Go foods, as the name suggests, are foods that make the body “Go” or help it function more efficiently and actively. They primarily focus on carbohydrates, sugar, and fat-rich foods.
+                            Go foods play an important role in providing fuel to maintain healthy brain function as well as give energy to different systems in the body.
+                            {'\n\n'}
+                            Grow foods are protein-rich foods that help the body to develop, grow stronger, and healthier. The proteins your body absorbs from Grow foods is an essential nutrient. Proteins are as the building blocks of life as they build and repair cells and tissues, and make hormones, enzymes, and antibodies.
+                            Grow foods in your diet will help your body to build stronger and healthier bones, muscles, teeth, and blood. The grow foods not only make you taller and vigorous, but it also improves your brain health by increasing your alertness.
+                            {'\n\n'}
+                            Glow foods are abundant in minerals and vitamins that help strengthen the immune system so it can efficiently fight off viruses, infections, and diseases. These vitamins and minerals also aid in the faster healing of wounds, repair of damaged cells, as well as to keep glowing skin, shiny hair, bright eyes, and healthy nails.
                             </Text>
                         </View>
                      </Overlay>
@@ -295,7 +305,15 @@ export function Nutrifact({ text, color, img, imgStyle, imgContainerStyle, }){
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
                         <View style={overlayStyles.overlay}> 
                             <Text style={overlayStyles.textStyle}>
-                                5
+                            The Nutritional Facts portions are found at the back of food labels. It provides consumers easy-to-use nutrition information guide as follows:
+                            {"\n\n"}
+                            - The serving size in both household and metric measures, which shows the amount of product the people actually eat.
+                            {"\n"}
+                            - The amount of calories from the product is also shown.
+                            {"\n"}
+                            - The amounts of nutrients and their % Daily Values (% DV) important to the health of today's consumers are also listed. The % DV shows how food fits into overall daily needs. For instance, if the percent daily value of food for fat is 25%, the remaining 75% can be obtained from other foods eaten throughout the day. These are reference amounts set by the government for daily intakes.
+                            {"\n"}
+                            - The label also tells the number of calories per gram of fat, carbohydrates, and protein.
                             </Text>
                         </View>
                      </Overlay>
