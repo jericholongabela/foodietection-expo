@@ -1,5 +1,6 @@
 import React from 'react'
 import fuzzy from './fuzzy';
+import recommendation from './recommendation';
 /*
 Usage:
 
