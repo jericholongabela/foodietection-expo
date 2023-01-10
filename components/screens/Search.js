@@ -69,7 +69,7 @@ export default function Search( props ){
                             data={data}
                             keyExtractor={( item ) => {item.tag_id, item.food_name}}
                             renderItem={({ item }) => (
-                                <SearchResult foodName={item.food_name}  />
+                                <SearchResult foodName={item.food_name} />
                             )}
                         />
                     )}

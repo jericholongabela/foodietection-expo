@@ -124,7 +124,7 @@ export default function NutritionLabel(
                 <View style={styles.VitaminAInfoContainer}>
                     <View style={styles.VitaminALabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Vitamin A</Text>
-                        <Text style={styles.NutrientAmount}>{vitaminAAmount}mg</Text>
+                        <Text style={styles.NutrientAmount}>{vitaminAAmount}μg</Text>
                     </View>
                     <Text style={styles.PercentDailyValuePercentage}>{vitaminAPercentage}</Text>
                 </View>
