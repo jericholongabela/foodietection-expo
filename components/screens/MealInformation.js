@@ -15,22 +15,30 @@ export default function MealInformation( props, ){
 
     const [foodData, setFoodData] = useState();
     const [calories, setCalories] = useState(0);
-    const [filename = 'filename.jpg', setFilename] = useState();
+    const [filename, setFilename] = useState();
     const [category, setCategory] = useState();
-    const [ query, setQuery ] = useState([]);
+    const [lackcategory, setLackCategory] = useState();
+    const [ query, setQuery ] = useState();
     let [isLoading, setLoading] = useState(true);
     let [error, setError] = useState();
 
     const { predictedResult, setPredictedResult } = useContext(Context);
-    console.log(predictedResult);
+    console.log(predictedResult[0].label);
+    let result;
+    for(let i=0;i<predictedResult.length();i++){
+        let space = ' ';
+        result = predictedResult[i].label + space;
+    }
+    setQuery(result);
+    console.log(query);
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
     header.append('Content-Type', 'application/json')
-    header.append('x-app-id', 'dc8f2b01')
-    header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
+    header.append('x-app-id', '15b86a06')
+    header.append('x-app-key', 'aeb1922d947c65391d6b0b562db1b5f7')
 
-    let jsonQuery = JSON.stringify({"query": predictedResult[0].label});
+    let jsonQuery = JSON.stringify({"query":'adobo'});
 
     let request = new Request (url, {
         method: 'POST',
@@ -64,6 +72,8 @@ export default function MealInformation( props, ){
     function fuzzyDaily(item){
         let x = daily_value(item);
         setCategory(x.category);
+        setLackCategory(x.lackgroup);
+        setFilename('Filename');
     };
     
 
@@ -143,7 +153,7 @@ export default function MealInformation( props, ){
                     <View style={mealinfoStyles.headerContainer}>
                         <Text style={mealinfoStyles.boldtextStyle}>
                         Your meal lacks a 
-                        <Text style={mealinfoStyles.glowinnerText}> {category}</Text>
+                        <Text style={mealinfoStyles.glowinnerText}> {lackcategory}</Text>
                         <Text style={mealinfoStyles.boldtextStyle}> food</Text>
                         </Text>
                     </View>
