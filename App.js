@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { View } from 'react-native'
+import { StatusBar } from 'expo-status-bar';
 import 'react-native-gesture-handler';
 
 // local components and packages
@@ -11,6 +12,7 @@ export default function App(props) {
   return (
     <Provider>
       <NavigationContainer>
+        <StatusBar />
         <Navigator />
       </NavigationContainer>
     </Provider>

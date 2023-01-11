@@ -66,7 +66,7 @@ export default function Navigator(props) {
                     fontWeight: 'bold',
                     color: colors.primary_white,
                     fontSize: 24,
-                }
+                },
                 }} />
             <Stack.Screen name="Food Information" component={FoodInformation} options={{
                 headerShown:true,

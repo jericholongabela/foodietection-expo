@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View, Text, TextInput, StyleSheet, Dimensions, ActivityIndicator, FlatList } from 'react-native'
 
 import NavigationBar from '../modules/NavigationBar'
 import SearchResult from '../modules/searchResult'
 import colors from '../../assets/styles/colors'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default function Search( props ){
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState();
     const [error, setError] = useState();
     const [textInput, setTextInput] = useState("");
+    const [ list, setList ] = useState([])
 
     // API Endpoints
 
@@ -45,6 +47,12 @@ export default function Search( props ){
         getFoodData();
     }
 
+    useEffect(() => {
+        for (let food in data) {
+            setList(list => [...list, data[food].food_name.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())])
+        }
+    }, [data])
+
     return (
         <SafeAreaView style={styles.screen}>
             <View style={styles.mainBody}>
@@ -64,14 +72,22 @@ export default function Search( props ){
                     </View>
                     )}
                     { isLoading ? (<ActivityIndicator />) : (
-                        <FlatList 
-                            contentContainerStyle={styles.list}
-                            data={data}
-                            keyExtractor={( item ) => {item.tag_id, item.food_name}}
-                            renderItem={({ item }) => (
-                                <SearchResult foodName={item.food_name} />
-                            )}
-                        />
+                        // <FlatList 
+                        //     contentContainerStyle={styles.list}
+                        //     data={data}
+                        //     keyExtractor={( item ) => {item.tag_id, item.food_name}}
+                        //     renderItem={({ item }) => (
+                        //         <SearchResult foodName={item.food_name} />
+                        //     )}
+                        // />
+                        <ScrollView contentContainerStyle={styles.list}>
+                            {list.map((item, index) => {
+                            return (
+                                <SearchResult key={index} foodName={item} />
+                            )
+                        })}
+                        </ScrollView>
+                        
                     )}
                 </View>
                 <View name='More Information' style={styles.MoreInformation}>
