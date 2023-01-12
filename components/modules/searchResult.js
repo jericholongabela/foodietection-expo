@@ -8,7 +8,7 @@ export default function SearchResult( {foodName} ) {
     const navigation = useNavigation();
 
     return(
-        <TouchableOpacity style={styles.ResultContainer} onPress={() => navigation.navigate("Food Information", foodName)}>
+        <TouchableOpacity style={styles.ResultContainer} >
             <Text style={styles.ResultText}>{foodName}</Text>
         </TouchableOpacity>
     )
