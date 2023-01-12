@@ -44,6 +44,7 @@ export default function Search( props ){
     }
 
     const onSearch = () => {
+        setList([]);
         getFoodData();
     }
 
@@ -119,12 +120,13 @@ const styles = StyleSheet.create({
     input: { 
         width: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').height * 0.06,
-        paddingVertical: 10,
+        paddingVertical: 8,
         paddingHorizontal: 15,
-        borderColor: colors.gray_shade_2,
+        borderColor: colors.yellow_shade_3,
         borderWidth: 2,
         borderRadius: 10, 
-        fontSize: 16,
+        fontSize: 18,
+        fontWeight: 'bold',
         color: colors.primary_black,
         marginTop: 30,
     },

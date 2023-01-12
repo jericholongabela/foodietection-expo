@@ -34,8 +34,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flexDirection: 'row',
         backgroundColor: colors.primary_white,
-        marginTop: Dimensions.get('window').height * 0.85,
+        marginTop: Dimensions.get('window').height * 0.845,
         justifyContent: 'space-around',
+        borderTopWidth: 0.5,
+        borderColor: colors.gray_shade_2,
     },
     buttonContainer: {
         width: Dimensions.get('window').width * 0.2,
