@@ -32,6 +32,7 @@ export default function FoodInformation ( food ) {
     })
 
     useEffect(() => {
+        console.log("I am working!")
         fetch(request)
             .then((response) => response.json())
             .then((json) => {
