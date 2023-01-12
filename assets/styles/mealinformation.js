@@ -38,6 +38,13 @@ const mealinfoStyles = StyleSheet.create({
         paddingRight: 10,
         color: colors.primary_white,
     },
+     
+    ReminderboldtextStyle: {
+        //fontFamily: 'Montserrat-Bold',
+        fontSize: 18,
+        paddingRight: 10,
+        color: colors.red_shade_1,
+    },
 
     textContainer: {
         width: Dimensions.get('window').width * 0.8,

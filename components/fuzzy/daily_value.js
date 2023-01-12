@@ -59,12 +59,12 @@ function daily_value(json) {
 
 
   let category = fuzzy(json.serving_weight_grams, json.nf_total_carbohydrate, json.nf_protein, vitaminA, vitaminC);
-  let recommend = recommendation(category);
-  let reminders = recommend.reminder;
-  let recommendedfoods = recommend.foods;
-  let lackgroup = recommend.lackgroup;
+  //let recommend = recommendation(recommedationinput);
+  //let reminders = recommend.reminder;
+  //let recommendedfoods = recommend.foods;
+  //let lackgroup = recommend.lackgroup;
   return{
-    calories_from_fat, total_fat, saturated_fat, cholesterol, sodium, potassium, carbohydrates, dietary_fiber, vitaminA, vitaminC, calcium, iron, category, recommendedfoods, reminders, lackgroup
+    calories_from_fat, total_fat, saturated_fat, cholesterol, sodium, potassium, carbohydrates, dietary_fiber, vitaminA, vitaminC, calcium, iron, category, //recommendedfoods, //reminders, //lackgroup
   };
   
 }

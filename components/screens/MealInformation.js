@@ -6,6 +6,7 @@ import mealinfoStyles from '../../assets/styles/mealinformation'
 import MealCard, { ViewSuggestion } from '../modules/MealCard';
 import daily_value from '../fuzzy/daily_value';
 import { Context } from "../global_context/GlobalContext";
+import recommendation from '../fuzzy/recommendation';
 
 export default function MealInformation( props, ){
     const { 
@@ -16,7 +17,9 @@ export default function MealInformation( props, ){
     const [foodData, setFoodData] = useState();
     const [calories, setCalories] = useState(0);
     const [filename = 'filename.jpg', setFilename] = useState();
-    const [category, setCategory] = useState();
+    let category;
+    const [lackfood, setLackFood] = useState();
+    const [reminder, setReminder] = useState();
     const [ query, setQuery ] = useState([]);
     let [isLoading, setLoading] = useState(true);
     let [error, setError] = useState();
@@ -30,7 +33,7 @@ export default function MealInformation( props, ){
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": predictedResult[0].label});
+    let jsonQuery = JSON.stringify({"query": 'pork adobo orange'});
 
     let request = new Request (url, {
         method: 'POST',
@@ -60,10 +63,24 @@ export default function MealInformation( props, ){
         tempCalories=Math.round(tempCalories);
         return setCalories(tempCalories);
     };
+    let counter = 0, joint = ' and ', tempcateg ='', lack;
 
     function fuzzyDaily(item){
         let x = daily_value(item);
-        setCategory(x.category);
+        category = x.category;
+
+        if(counter > 0)
+        tempcateg = tempcateg + joint + x.category;
+        else
+        tempcateg = x.category;
+        console.log(tempcateg);
+        lack = recommendation(tempcateg);
+        console.log(lack.lackgroup);
+        setLackFood(lack.lackgroup);
+        setReminder(lack.reminder);
+
+        counter = counter+1;
+
     };
     
 
@@ -143,9 +160,14 @@ export default function MealInformation( props, ){
                     <View style={mealinfoStyles.headerContainer}>
                         <Text style={mealinfoStyles.boldtextStyle}>
                         Your meal lacks a 
-                        <Text style={mealinfoStyles.glowinnerText}> {category}</Text>
+                        <Text style={mealinfoStyles.glowinnerText}> {lackfood}</Text>
                         <Text style={mealinfoStyles.boldtextStyle}> food</Text>
                         </Text>
+                        <Text style={mealinfoStyles.ReminderboldtextStyle}>Reminder:</Text>
+                        <Text style={mealinfoStyles.boldtextStyle}>
+                        {reminder}
+                        </Text>
+                        
                     </View>
                     <ViewSuggestion/>
                 </View>

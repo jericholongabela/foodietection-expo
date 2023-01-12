@@ -29,22 +29,22 @@ function recommendation(category) {
         lackgroup = 'GROW and GO';
         reminder = "Ohhhh! It appears that your meal lacks Go and Grow foods. To complete your wholesome meal, eat meals abundant in carbohydrates and protein.";
     }
-    if(category == 'GO and GROW'){
+    if(category == 'GO and GROW' || category =='GROW and GLOW'){
         foods = getglow();
         lackgroup = 'GLOW';
         reminder = "A daily reminder dear user. It appears that your meal lacks Glow foods. To complete your wholesome meal, eat meals abundant in vitamins and minerals";
     }
-    if(category == 'GO and GLOW'){
+    if(category == 'GO and GLOW' || category =='GLOW and GO'){
         foods = getgrow();
         lackgroup = 'GROW';
         reminder = "We advise eating foods high in protein to complete your balanced diet as it appears that your meal lacks Grow foods.";
     }
-    if(category == 'GROW and GLOW'){
+    if(category == 'GROW and GLOW' || category =='GLOW and GROW'){
         foods = getgo();
         lackgroup = 'GO';
         reminder = "We advise eating foods high in carbohydrates to complete your balanced diet as it appears that your meal lacks G0 foods.";
     }
-    if(category == 'GO and GLOW and GROW'){
+    if(category == 'GO and GLOW and GROW' || category =='GO and GROW and GLOW'||category =='GROW and GO and GLOW'||category =='GROW and GLOW and GO' || category =='GLOW and GO and GROW'||category =='GLOW and GROW and GO'){
         lackgroup = 'NONE';
         reminder = "Congratulations! You have a healthy meal, enjoy your eating.";
     }
