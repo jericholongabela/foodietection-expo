@@ -169,6 +169,7 @@ export default function Cam(){
         const detectionObjects = [];
     
         scores[0].forEach((score, i) => {
+            console.log('counter: ', score);
           if (score > threshold) {
             const bbox = [];
             // const minY = boxes[0][i][0] * imgRef.offsetTop;
