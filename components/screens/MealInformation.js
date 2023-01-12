@@ -20,11 +20,13 @@ export default function MealInformation( props, ){
     let category;
     const [lackfood, setLackFood] = useState();
     const [reminder, setReminder] = useState();
+    const [lackfoods, setLackFoods] = useState();
     const [ query, setQuery ] = useState([]);
     let [isLoading, setLoading] = useState(true);
     let [error, setError] = useState();
 
     const { predictedResult, setPredictedResult } = useContext(Context);
+    const { foodrecommendation, setFoodRecommendation} = useContext(Context);
     console.log(predictedResult);
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
@@ -73,16 +75,15 @@ export default function MealInformation( props, ){
         tempcateg = tempcateg + joint + x.category;
         else
         tempcateg = x.category;
-        console.log(tempcateg);
         lack = recommendation(tempcateg);
-        console.log(lack.lackgroup);
         setLackFood(lack.lackgroup);
         setReminder(lack.reminder);
-
+        setFoodRecommendation();
         counter = counter+1;
+        console.log(lackfoods);
 
     };
-    
+    console.log(lackfoods);
 
     return (
         <SafeAreaView style={mealinfoStyles.screen}>
@@ -167,7 +168,7 @@ export default function MealInformation( props, ){
                         <Text style={mealinfoStyles.boldtextStyle}>
                         {reminder}
                         </Text>
-                        
+
                     </View>
                     <ViewSuggestion/>
                 </View>
