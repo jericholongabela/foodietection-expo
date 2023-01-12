@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ActivityIndicator } from 'react-native'
 import { Overlay } from '@rneui/base'
 import colors from '../../assets/styles/colors'
@@ -7,6 +7,8 @@ import overlayStyles from '../../assets/styles/overlay';
 import { FlatList } from 'react-native-gesture-handler';
 import searchStyles from '../../assets/styles/search';
 import SearchResult from './searchResult';
+import { Context } from "../global_context/GlobalContext";
+import recommendation from '../fuzzy/recommendation';
 
 export default function MealCard({foodName, foodCategory, foodServing, foodServingUnit, foodServingWeight, foodCalories, foodImage, totalCalories}){
     return (
@@ -40,6 +42,8 @@ export default function MealCard({foodName, foodCategory, foodServing, foodServi
 }
 
 export function ViewSuggestion({foodCategory, }){
+    const { foodrecommendation, setFoodRecommendation} = useContext(Context);
+    console.log('Food recommendation: ',foodrecommendation);
 
     const [visible, setVisible] = useState (false);
     const toggleOverlay = () => {
@@ -60,7 +64,8 @@ export function ViewSuggestion({foodCategory, }){
         headers: header,
         mode: 'cors',
     }
-
+    let fn = recommendation(foodrecommendation);
+    console.log(fn.foods);
     let request = new Request (url, options)
 
     function getFoodData (){
@@ -92,9 +97,9 @@ export function ViewSuggestion({foodCategory, }){
                     <FlatList 
                     contentContainerStyle={searchStyles.list}
                     data={data}
-                    keyExtractor={({ food_name }, tag_id) => food_name}
+                    keyExtractor={({ fn }, tag_id) => fn}
                     renderItem={({ item }) => (
-                    <SearchResult foodName={item.food_name} />
+                    <SearchResult foodName={fn.foods} />
                     )}
                     />
             )}

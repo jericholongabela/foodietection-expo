@@ -65,7 +65,7 @@ export default function MealInformation( props, ){
         tempCalories=Math.round(tempCalories);
         return setCalories(tempCalories);
     };
-    let counter = 0, joint = ' and ', tempcateg ='', lack;
+    let counter = 0, joint = ' and ', tempcateg ='', lack, lackfoodss;
 
     function fuzzyDaily(item){
         let x = daily_value(item);
@@ -76,15 +76,11 @@ export default function MealInformation( props, ){
         else
         tempcateg = x.category;
         lack = recommendation(tempcateg);
-        setLackFood(lack.lackgroup);
+        setFoodRecommendation(lack.lackgroup);
         setReminder(lack.reminder);
-        setFoodRecommendation();
+        lackfoodss = lack.foods;
         counter = counter+1;
-        console.log(lackfoods);
-
     };
-    console.log(lackfoods);
-
     return (
         <SafeAreaView style={mealinfoStyles.screen}>
             <Header textProps={"Meal Information"} />
@@ -161,7 +157,7 @@ export default function MealInformation( props, ){
                     <View style={mealinfoStyles.headerContainer}>
                         <Text style={mealinfoStyles.boldtextStyle}>
                         Your meal lacks a 
-                        <Text style={mealinfoStyles.glowinnerText}> {lackfood}</Text>
+                        <Text style={mealinfoStyles.glowinnerText}> {foodrecommendation}</Text>
                         <Text style={mealinfoStyles.boldtextStyle}> food</Text>
                         </Text>
                         <Text style={mealinfoStyles.ReminderboldtextStyle}>Reminder:</Text>
