@@ -7,6 +7,7 @@ const Provider = ( { children } ) => {
     const [ loadingModel, setLoadingModel ] = useState(false);
     const [ isPredicting, setIsPredicting ] = useState(false);
     const [ predictedResult, setPredictedResult ] = useState([]);
+    const [ nutrients, setNutrients ] = useState();
 
     const globalContext = {
         galleryPhoto,
