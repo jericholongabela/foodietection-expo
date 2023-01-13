@@ -44,7 +44,7 @@ function fuzzy(serving, carbohydrates, protein, vitaminA, vitaminC) {
         category = "GLOW";
     }
     else{
-        category = "lack on Nutrients"
+        category = "Cannot Determine";
     }
 
 

@@ -48,6 +48,7 @@ export default function Navigator(props) {
                 headerStyle: {
                     backgroundColor: colors.primary_white,
                 },
+
                 headerTitleStyle: {
                     fontWeight: 'bold',
                     color: colors.primary_black,

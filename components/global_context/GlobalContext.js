@@ -7,6 +7,7 @@ const Provider = ( { children } ) => {
     const [ loadingModel, setLoadingModel ] = useState(false);
     const [ isPredicting, setIsPredicting ] = useState(false);
     const [ predictedResult, setPredictedResult ] = useState([]);
+    const [ foodrecommendation,setFoodRecommendation] = useState([]);
     const [ nutrients, setNutrients ] = useState();
 
     const globalContext = {
@@ -18,6 +19,8 @@ const Provider = ( { children } ) => {
         setIsPredicting,
         predictedResult, 
         setPredictedResult,
+        foodrecommendation,
+        setFoodRecommendation,
     }
 
     return <Context.Provider value={globalContext}>
