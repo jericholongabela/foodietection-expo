@@ -7,12 +7,13 @@ import { Icon } from "@rneui/themed";
 
 import { getFoodNutrients } from "../modules/getFoodNutrients";
 import colors from "../../assets/styles/colors";
+import daily_value from "../fuzzy/daily_value";
 
 export default function FoodInformation ( food ) {
 
     let [isLoading, setLoading] = useState(true);
     let [nutrients, setNutrients] = useState(null);
-    let [data, setData] = useState([]);
+    let [data, setData] = useState();
     let [error, setError] = useState();
 
     // API Endpoints
@@ -22,7 +23,7 @@ export default function FoodInformation ( food ) {
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": food.route.params});
+    let jsonQuery = JSON.stringify({"query": "adobo"});
 
     let request = new Request (url, {
         method: 'POST',
@@ -32,11 +33,11 @@ export default function FoodInformation ( food ) {
     })
 
     useEffect(() => {
-        console.log("I am working!")
         fetch(request)
             .then((response) => response.json())
             .then((json) => {
                 setData((json.foods));
+                console.log("I am done fetching!")
                 },
                 (error) => {
                     setLoading(false);
@@ -50,6 +51,10 @@ export default function FoodInformation ( food ) {
     useEffect(() => {
         console.log(data);
     }, [data]);
+
+    console.log("data", data)
+    let x = daily_value(data);
+    console.log(x.carbohydrates);
     
     return(
         <SafeAreaView style={styles.screen}>
@@ -75,7 +80,6 @@ export default function FoodInformation ( food ) {
                         </View>
                     </View>
                 </View>
-                {getFoodNutrients(data)}
                 <NutritionLabel
                 servingsPerContainer = {"4"}
                 servingSize = {"40g"}

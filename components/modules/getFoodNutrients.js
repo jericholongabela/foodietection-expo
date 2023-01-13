@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function getFoodNutrients ( data ) {
 
     console.log("I am in getFoodNutrients: ", data);
-    let [nutrients, setNutrients] = useState(null);
+    const [nutrients, setNutrients] = useState(null);
 
     // making sure nutrients is empty
     //setNutrients(null);
