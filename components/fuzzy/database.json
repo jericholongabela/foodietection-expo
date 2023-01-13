@@ -1,5 +1,6 @@
 { "foodgroup": [
     {"name":"GO", "foods":["Rice", "Cereal", "Potato", "kamote", "tinapay"]},
-    {"name":"GROW", "foods":["adobo", "kaldereta"]},
-    {"name":"GLOW", "foods":["brocolli", "cauliflower", "Orange"]}
+    {"name":"GROW", "foods":["adobo", "kaldereta", "Tinola", "Steak"]},
+    {"name":"GLOW", "foods":["brocolli", "cauliflower", "Orange", "Malungay", "Manga"]},
+    {"name":"None", "foods": ["None"]}
   ]}

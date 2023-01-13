@@ -8,7 +8,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import searchStyles from '../../assets/styles/search';
 import SearchResult from './searchResult';
 import { Context } from "../global_context/GlobalContext";
-import recommendation from '../fuzzy/recommendation';
+import recommendation from '../fuzzy/foodlist';
 
 export default function MealCard({foodName, foodCategory, foodServing, foodServingUnit, foodServingWeight, foodCalories, foodImage, totalCalories}){
     return (
