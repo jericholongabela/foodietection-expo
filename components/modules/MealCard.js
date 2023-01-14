@@ -43,8 +43,6 @@ export default function MealCard({foodName, foodCategory, foodServing, foodServi
 
 export function ViewSuggestion({foodCategory, }){
     const { foodrecommendation, setFoodRecommendation} = useContext(Context);
-    console.log('Food recommendation: ',foodrecommendation);
-
     const [visible, setVisible] = useState (false);
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -65,7 +63,6 @@ export function ViewSuggestion({foodCategory, }){
         mode: 'cors',
     }
     let fn = recommendation(foodrecommendation);
-    console.log('Arigato: ', fn.foods);
     let request = new Request (url, options)
 
     function getFoodData (){

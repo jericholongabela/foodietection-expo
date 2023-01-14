@@ -158,18 +158,19 @@ export default function Cam(){
         const boxes = output[1].arraySync();
         const scores = output[5].arraySync();
         const classes = output[3].dataSync();
-        const threshold = 0.5;
+        const threshold = 0.3;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
-
+        
+        console.log('scores: ',scores);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
     }
 
     function buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES) {
         const detectionObjects = [];
-    
+        
         scores[0].forEach((score, i) => {
-            console.log('counter: ', score);
+        console.log('counter: ', score);
           if (score > threshold) {
             const bbox = [];
             // const minY = boxes[0][i][0] * imgRef.offsetTop;
@@ -230,9 +231,10 @@ export default function Cam(){
             //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
+            //<Canvas style={styles.canvas} ref={ref} ></Canvas>
             <View styles = {styles.camera}>
                 <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
-                <Canvas style={styles.canvas} ref={ref} ></Canvas>
+                
                 </ImageBackground>
             </View>
             )}
