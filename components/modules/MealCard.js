@@ -65,7 +65,7 @@ export function ViewSuggestion({foodCategory, }){
         mode: 'cors',
     }
     let fn = recommendation(foodrecommendation);
-    console.log(fn.foods);
+    console.log('Arigato: ', fn.foods);
     let request = new Request (url, options)
 
     function getFoodData (){
@@ -96,10 +96,10 @@ export function ViewSuggestion({foodCategory, }){
             { isLoading ? (<ActivityIndicator />) : (
                     <FlatList 
                     contentContainerStyle={searchStyles.list}
-                    data={data}
-                    keyExtractor={({ fn }, tag_id) => fn}
+                    data={fn.foods}
+                    keyExtractor={({ item }, tag_id) => item}
                     renderItem={({ item }) => (
-                    <SearchResult foodName={fn.foods} />
+                    <SearchResult foodName={item.food} />
                     )}
                     />
             )}

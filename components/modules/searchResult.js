@@ -5,6 +5,7 @@ import colors from "../../assets/styles/colors";
 import { useNavigation } from "@react-navigation/native";
 
 export default function SearchResult( {foodName} ) {
+    console.log('Food Name: ', foodName);
     const navigation = useNavigation();
 
     return(
