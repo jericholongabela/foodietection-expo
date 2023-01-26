@@ -75,8 +75,12 @@ export default function MealInformation( props, ){
         let x = daily_value(item);
         category = x.category;
 
-        if(counter > 0)
-        tempcateg = tempcateg + joint + x.category;
+        if(counter > 0){
+            if(tempcateg == x.category)
+                tempcateg = tempcateg;
+            else
+                tempcateg = tempcateg + joint + x.category;
+        }
         else
         tempcateg = x.category;
         lack = recommendation(tempcateg);
@@ -140,7 +144,7 @@ export default function MealInformation( props, ){
                     {/* meal info goes here. */}
                     <View style={mealinfoStyles.totalCaloriesContainer}>
                         <Text style={mealinfoStyles.boldtextStyle}>
-                            Total Calories:        
+                            Total Calories:     
                         </Text>
                         <Text style={mealinfoStyles.boldtextStyle}>
                             {calories}  {/* Fetches the value of calories */}    
@@ -168,9 +172,8 @@ export default function MealInformation( props, ){
                         <Text style={mealinfoStyles.boldtextStyle}>
                         {reminder}
                         </Text>
-
+                        <ViewSuggestion/>
                     </View>
-                    <ViewSuggestion/>
                 </View>
             </ScrollView>
         </SafeAreaView>
