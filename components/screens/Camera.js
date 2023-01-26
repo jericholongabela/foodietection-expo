@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -27,6 +27,11 @@ const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bic
                     "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
                     "Pork Afritada", "Rambutan", "Sisig", "Tinolang Manok", "Turon"]
 
+const names =   [
+                'Initializing the model...', 'Processing image...', 'Detecting foods...', 'Getting predictions...', 'Converting image input...', 'Calculating detection scores...',
+                'Initializing labels...'
+                ]
+                
 export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
@@ -36,7 +41,7 @@ export default function Cam(){
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
     const [ isPredicting, setIsPredicting ] = useState(false);
-    const [ loadingTexts, setLoadingText ] = useState('Loading...');
+    const [ loadingTexts, setLoadingText ] = useState("");
 
     // globalcontexts
     const { loadingModel, setLoadingModel } = useContext(Context);
@@ -45,6 +50,16 @@ export default function Cam(){
     const ref = useRef(null);
     const imgRef = useRef(null);
     const navigation = useNavigation();
+
+    const shuffle = useCallback(() => {
+        const index = Math.floor(Math.random() * names.length);
+        setLoadingText(names[index]);
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 3000);
+        return () => clearInterval(intervalID);
+    }, [shuffle])
 
     useEffect(() => {
         (async () => {
@@ -105,7 +120,7 @@ export default function Cam(){
         });
 
         if (!result.canceled && result!=null) {
-            setLoadingText('Detecting foods...');
+            //setLoadingText('Detecting foods...');
             setIsPredicting(true);
             await processImagePrediction(result.assets[0]);
             setIsPredicting(false);
@@ -122,7 +137,7 @@ export default function Cam(){
         //const croppedData = await cropPicture(base64Image);
         setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
-        setLoadingText('Model start to predict image...');
+        //setLoadingText('Model start to predict image...');
         const output = model.executeAsync(tensor._z).then((output) => {
              const boxes = output[1].arraySync();
              const scores = output[5].arraySync();
