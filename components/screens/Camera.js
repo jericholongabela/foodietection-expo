@@ -36,6 +36,7 @@ export default function Cam(){
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
     const [ isPredicting, setIsPredicting ] = useState(false);
+    const [ loadingTexts, setLoadingText ] = useState('Loading...');
 
     // globalcontexts
     const { loadingModel, setLoadingModel } = useContext(Context);
@@ -104,8 +105,8 @@ export default function Cam(){
         });
 
         if (!result.canceled && result!=null) {
+            setLoadingText('Detecting foods...');
             setIsPredicting(true);
-            console.log("Is Predicting? ", isPredicting);
             await processImagePrediction(result.assets[0]);
             setIsPredicting(false);
             console.log("Is Predicting? ", isPredicting);
@@ -115,17 +116,20 @@ export default function Cam(){
     }
 
     const processImagePrediction = async (base64Image) => {
+        console.log('loading model');
         const model = await getModel();
+        console.log('End of loading');
         //const croppedData = await cropPicture(base64Image);
         setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
+        setLoadingText('Model start to predict image...');
         const output = model.executeAsync(tensor._z).then((output) => {
              const boxes = output[1].arraySync();
              const scores = output[5].arraySync();
              const classes = output[3].dataSync();
-             console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
-             console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-             console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+             //console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+             //console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+             //console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
             // console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
             // console.log('scores: ',scores[0][0]);
             // console.log('Classes: ',classes[0]);
@@ -193,7 +197,15 @@ export default function Cam(){
         })
         return detectionObjects
       }
-
+      console.log('number of renders');
+    if(isPredicting){
+        return (
+        <ImageBackground source={require('../../assets/images/loadings.jpg')} resizeMode='cover' style={[styles.container]}>
+            <ActivityIndicator size="large" style={{backgroundColor: '#000000c0', height:75 , width:75, borderRadius:10,}} visible={isPredicting} color="#00ff00" />
+            <Text style={[styles.loadingText]}>{loadingTexts}</Text>
+        </ImageBackground>
+        )
+    }
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
@@ -205,6 +217,7 @@ export default function Cam(){
                 autoFocus={true}
             >
                 <View style={styles.cameraButtonsContainer}>
+                    
                     <TouchableOpacity onPress={() => {
                         selectImage();
                     }}>
@@ -224,7 +237,8 @@ export default function Cam(){
             </Camera>
             :
             (
-            loadingModel || isPredicting ? <ActivityIndicator size="large" color={colors.primary_white} /> :
+            isPredicting ? <ActivityIndicator size="large" styles = {styles.camera} visible={isPredicting} color={colors.primary_white} /> :
+            //isPredicting ? <ActivityIndicator size="large" visible={isPredicting} color={colors.primary_white} /> :
             //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
             //bale dito ang goal, gumawa ng container tapos ilagay don yung image sa loob or gawing background
             //tapos lalagyan mo ng canvas na dapat same height and width don sa ng image
@@ -273,6 +287,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    loadingText: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: '#FFFFFF',
+        marginTop: 50,
+        textAlign: 'center',
+    },
     resultText: {
         fontWeight: 'bold',
         fontSize: 24,
@@ -292,5 +313,10 @@ const styles = StyleSheet.create({
     canvas: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.7,
+    },
+    container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     },
 });
