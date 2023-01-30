@@ -5,14 +5,14 @@ import NutritionLabel from "../modules/nutritionlabel";
 import { ScrollView } from "react-native-gesture-handler";
 import { Icon } from "@rneui/themed";
 
-import { getFoodNutrients } from "../modules/getFoodNutrients";
+import {getFoodNutrients} from "../modules/getFoodNutrients";
 import colors from "../../assets/styles/colors";
 import daily_value from "../fuzzy/daily_value";
 
 export default function FoodInformation ( food ) {
 
     let [isLoading, setLoading] = useState(true);
-    let [nutrients, setNutrients] = useState(null);
+    const [nutrients, setNutrients] = useState(null);
     let [data, setData] = useState();
     let [error, setError] = useState();
 
@@ -23,7 +23,7 @@ export default function FoodInformation ( food ) {
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": "adobo"});
+    let jsonQuery = JSON.stringify({"query": food.route.params.data});
 
     let request = new Request (url, {
         method: 'POST',
@@ -38,6 +38,7 @@ export default function FoodInformation ( food ) {
             .then((json) => {
                 setData((json.foods));
                 console.log("I am done fetching!")
+                settingNutrients(json.foods)
                 },
                 (error) => {
                     setLoading(false);
@@ -48,14 +49,17 @@ export default function FoodInformation ( food ) {
         
     }, []);
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
 
-    console.log("data", data)
-    let x = daily_value(data);
-    console.log(x.carbohydrates);
-    
+    function settingNutrients (foodInfo) {
+        let x = getFoodNutrients(foodInfo);
+        console.log("I am x: ", x);
+        setNutrients(x);
+    }
+
+    useEffect(() => {
+        console.log("I am in useEffect: ", nutrients);
+    }, [nutrients]);
+
     return(
         <SafeAreaView style={styles.screen}>
             <ScrollView 
@@ -63,9 +67,9 @@ export default function FoodInformation ( food ) {
              >
                 <View style={styles.foodInformationContainer}>
                     <View style={styles.foodNameCategoryContainer}>
-                        <Text style={styles.foodName}>Adobo</Text>
+                        <Text style={styles.foodName}>{food.route.params.data}</Text>
                         <View style={styles.foodCategoryContainer}>
-                            <Text style={styles.foodCategory}>Grow</Text>
+                            <Text style={styles.foodCategory}>wala pa</Text>
                             <TouchableOpacity>
                                 <Icon name="help-outline" type="material" size={26} style={styles.helpIcon} />
                             </TouchableOpacity>
@@ -74,42 +78,43 @@ export default function FoodInformation ( food ) {
                     <View style={styles.foodImageDetailsContainer}>
                         <Image style={styles.foodImage} source={require("../../assets/splash.png")} resizeMethod={"contain"} />
                         <View style={styles.foodDetailsContainer}>
-                            <Text style={styles.servingSize}>Serving size: 1 cup (241g)</Text>
+                            <Text style={styles.servingSize}>{nutrients.servingsPerContainer} {nutrients.servingUnit} ({nutrients.servingWeight}g)</Text>
                             <Text style={styles.caloriesPerServing}>Calories per serving</Text>
-                            <Text style={styles.calories}>454</Text>
+                            <Text style={styles.calories}>{nutrients.calories}</Text>
                         </View>
                     </View>
                 </View>
+                { nutrients?
                 <NutritionLabel
-                servingsPerContainer = {"4"}
-                servingSize = {"40g"}
-                servingUnit = {"oz"}
-                calories = {"300"}
-                totalFatAmount = {"10"}
-                totalFatPercentage = {"2%"}
-                saturatedFatAmount = {"5"}
-                saturatedFatPercentage = {"4%"}
-                transFatAmount = {"0"}
-                cholesterolAmount = {"0"}
-                cholesterolPercentage = {"0%"}
-                sodiumAmount = {"0"}
-                sodiumPercentage = {"0%"}
-                totalCarbohydrateAmount = {"10"}
-                totalCarbohydratePercentage = {"2%"}
-                dietaryFiberAmount = {"5"}
-                dietaryFiberPercentage = {"4%"}
-                totalSugarsAmount = {"0"}
-                totalSugarsPercentage = {"0%"}
-                proteinAmount = {"0"}
-                vitaminAAmount = {145}
-                vitaminAPercentage = {"0%"}
-                vitaminCAmount = {"0"}
-                vitaminCPercentage = {"0%"}
-                calciumAmount = {"0"}
-                calciumPercentage = {"0%"}
-                ironAmount = {"0"}
-                ironPercentage = {"0%"}
-                />
+                servingsPerContainer = {nutrients.servingsPerContainer}
+                servingUnit = {nutrients.servingUnit}
+                servingWeight = {nutrients.servingWeight}
+                calories = {nutrients.calories}
+                totalFatAmount = {nutrients.totalFatAmount}
+                totalFatPercentage = {nutrients.totalFatPercentage}
+                saturatedFatAmount = {nutrients.saturatedFatAmount}
+                saturatedFatPercentage = {""}
+                transFatAmount = {nutrients.transFatAmount}
+                cholesterolAmount = {nutrients.cholesterolAmount}
+                cholesterolPercentage = {nutrients.cholesterolPercentage}
+                sodiumAmount = {nutrients.sodiumAmount}
+                sodiumPercentage = {nutrients.sodiumPercentage}
+                totalCarbohydrateAmount = {nutrients.totalCarbohydrateAmount}
+                totalCarbohydratePercentage = {nutrients.totalCarbohydratePercentage}
+                dietaryFiberAmount = {nutrients.dietaryFiberAmount}
+                dietaryFiberPercentage = {nutrients.dietaryFiberPercentage}
+                totalSugarsAmount = {nutrients.totalSugarsAmount}
+                totalSugarsPercentage = {""}
+                proteinAmount = {nutrients.proteinAmount}
+                vitaminAAmount = {nutrients.vitaminAAmount}
+                vitaminAPercentage = {nutrients.vitaminAPercentage}
+                vitaminCAmount = {nutrients.vitaminCAmount}
+                vitaminCPercentage = {nutrients.vitaminCPercentage}
+                calciumAmount = {nutrients.calciumAmount}
+                calciumPercentage = {nutrients.calciumPercentage}
+                ironAmount = {nutrients.ironAmount}
+                ironPercentage = {nutrients.ironPercentage}
+                /> : null}
                 <View style={{height:80}}></View>
             </ScrollView>
         </SafeAreaView>

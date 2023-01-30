@@ -43,6 +43,7 @@ export default function Cam(){
 
     const ref = useRef(null);
     const imgRef = useRef(null);
+    const activityRef = useRef(null);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -66,6 +67,26 @@ export default function Cam(){
     }
   }, [ref]);
 
+  useEffect(() => {
+    console.log("Predicting? ", isPredicting);
+    if (isPredicting) {
+        predictingImage();
+    }
+  }, [isPredicting]);
+
+  function predictingImage (){
+    return (
+      <View style={styles.predictingImage}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.predictingText}>Predicting...</Text>
+      </View>
+    );
+  }
+
+  useEffect(() => {
+    setIsPredicting(false);
+    console.log("Predicting? ", isPredicting);
+  }, [predictedResult]);
 
     if (hasCameraPermission === undefined) {
         return <Text>No access to camera</Text>
@@ -102,23 +123,24 @@ export default function Cam(){
             base64: true,
             quality: 1,
         });
-
+        
         if (!result.canceled && result!=null) {
-            setIsPredicting(true);
-            console.log("Is Predicting? ", isPredicting);
             await processImagePrediction(result.assets[0]);
-            setIsPredicting(false);
-            console.log("Is Predicting? ", isPredicting);
         } else {
             console.log("Image selection cancelled")
         }
+        setIsPredicting(false);
     }
 
     const processImagePrediction = async (base64Image) => {
+        console.log("Loading model...");
         const model = await getModel();
         //const croppedData = await cropPicture(base64Image);
+        console.log("Converting image...");
         setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
+        
+        console.log("Getting output...");
         const output = model.executeAsync(tensor._z).then((output) => {
              const boxes = output[1].arraySync();
              const scores = output[5].arraySync();
@@ -131,10 +153,11 @@ export default function Cam(){
             // console.log('Classes: ',classes[0]);
             // console.log(Dimensions.get('window').width);
             // console.log(Dimensions.get('window').height * 0.7);
+            console.log("Rendering output...");
             renderPredictions(output);
-            predictedResult.forEach((prediction, i) => {
-                setQuery((query) => [...query, prediction[i].label]);
-            });
+            // predictedResult.forEach((prediction, i) => {
+            //     setQuery((query) => [...query, prediction[i].label]);
+            // });
         });
         
 
@@ -192,11 +215,12 @@ export default function Cam(){
         })
         return detectionObjects
       }
+      
 
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
-            {!image ?
+            {!isPredicting && !image ?
             <Camera
                 style={styles.camera}
                 type={type}
@@ -206,10 +230,11 @@ export default function Cam(){
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={() => {
                         selectImage();
+                        setIsPredicting(true);
                     }}>
                         <MaterialCommunityIcons name="image" size={30} color={colors.primary_white} /> 
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={takePicture}>
+                    <TouchableOpacity onPress={saveImage}>
                         <MaterialCommunityIcons name="camera-iris" size={60} color={colors.primary_white} /> 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
@@ -222,20 +247,24 @@ export default function Cam(){
                 </View>
             </Camera>
             :
-            (
-            loadingModel || isPredicting ? <ActivityIndicator size="large" color={colors.primary_white} /> :
             //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
             //bale dito ang goal, gumawa ng container tapos ilagay don yung image sa loob or gawing background
             //tapos lalagyan mo ng canvas na dapat same height and width don sa ng image
             //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
-            <View styles = {styles.camera}>
-                <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
-                <Canvas style={styles.canvas} ref={ref} ></Canvas>
-                </ImageBackground>
-            </View>
-            )}
+            predictedResult ?
+                <View styles = {styles.camera}>
+                    <ActivityIndicator size="large" color={colors.red_shade_1} animating={isPredicting}/>
+                    <Text> Processing Image... </Text>
+                </View>
+            :
+                <View styles = {styles.camera}>
+                    <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
+                    <Canvas style={styles.canvas} ref={ref} ></Canvas>
+                    </ImageBackground>
+                </View>
+            }
             <View style={styles.resultContainer}>
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
