@@ -43,6 +43,13 @@ export default function Cam(){
     const [ isPredicting, setIsPredicting ] = useState(false);
     const [ loadingTexts, setLoadingText ] = useState("");
 
+    const [ bbox1, setbbox1] = useState();
+    const [ bbox2, setbbox2] = useState();
+    const [ bbox3, setbbox3] = useState();
+    const [ bbox4, setbbox4] = useState();
+    const [ label, setlabel] = useState();
+    const [ score, setscore] = useState();
+
     // globalcontexts
     const { loadingModel, setLoadingModel } = useContext(Context);
     const { predictedResult, setPredictedResult } = useContext(Context);
@@ -69,19 +76,20 @@ export default function Cam(){
             setHasMediaLibraryPermission(MediaLibraryPermission.status === "granted");
         })();
     }, []);
-
+    
   useEffect(() => {
     if (ref.current) {
-      const ctx = ref.current.getContext('2d');
-      ctx.strokeStyle = "black";
-      Canvas.width = 500;
-      Canvas.height = 400;
-      ctx.lineWidth = 4;
-      ctx.strokeRect(10,10, 100,100);
-      ctx.strokeRect(70,90, 100,100);
+        ref.current.width = Dimensions.get('window').width;
+        ref.current.height = Dimensions.get('window').height * 0.7;
+        const ctx = ref.current.getContext('2d');
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(bbox1,bbox2, bbox3, bbox4);
+        ctx.fillStyle = "#00FF00";
+        ctx.font = "20px Verdana";
+        ctx.fillText(label + " " + score*100+"%", bbox1, bbox2)
     }
-  }, [ref]);
-
+  },);
 
     if (hasCameraPermission === undefined) {
         return <Text>No access to camera</Text>
@@ -142,10 +150,10 @@ export default function Cam(){
              const boxes = output[1].arraySync();
              const scores = output[5].arraySync();
              const classes = output[3].dataSync();
-             //console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
-             //console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-             //console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
-            // console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
+             console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+             console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+             console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+            console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
             // console.log('scores: ',scores[0][0]);
             // console.log('Classes: ',classes[0]);
             // console.log(Dimensions.get('window').width);
@@ -177,7 +185,7 @@ export default function Cam(){
         const boxes = output[1].arraySync();
         const scores = output[5].arraySync();
         const classes = output[3].dataSync();
-        const threshold = 0.3;
+        const threshold = 0.4;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
@@ -187,19 +195,26 @@ export default function Cam(){
         const detectionObjects = [];
         
         scores[0].forEach((score, i) => {
-        console.log('counter: ', score);
           if (score > threshold) {
             const bbox = [];
+            console.log(score);
             // const minY = boxes[0][i][0] * imgRef.offsetTop;
             // const minX = boxes[0][i][1] * imgRef.offsetLeft;
-            const minY = boxes[0][i][0];
-            const minX = boxes[0][i][1];
-            const maxY = boxes[0][i][2];
-            const maxX = boxes[0][i][3];
+            const minY = boxes[0][i][0] * Dimensions.get('window').height * 0.7;
+            const minX = boxes[0][i][1] * Dimensions.get('window').width;
+            const maxY = boxes[0][i][2] * Dimensions.get('window').height * 0.7;
+            const maxX = boxes[0][i][3] * Dimensions.get('window').width;;
             bbox[0] = minX;
             bbox[1] = minY;
             bbox[2] = maxX - minX;
             bbox[3] = maxY - minY;
+            setbbox1(bbox[0]);
+            setbbox2(bbox[1]);
+            setbbox3(bbox[2]);
+            setbbox4(bbox[3]);
+            setlabel(FOOD_CLASSES[classes[i] - 1]);
+            setscore(score.toFixed(4));
+
             detectionObjects.push({
               class: classes[i],
               label: FOOD_CLASSES[classes[i] - 1],
@@ -219,6 +234,7 @@ export default function Cam(){
         </ImageBackground>
         )
     }
+    console.log(bbox1);
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
@@ -261,7 +277,7 @@ export default function Cam(){
             //<Canvas style={styles.canvas} ref={ref} ></Canvas>
             <View styles = {styles.camera}>
                 <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
-                
+                    <Canvas style={styles.canvas} ref={ref} ></Canvas>
                 </ImageBackground>
             </View>
             )}
