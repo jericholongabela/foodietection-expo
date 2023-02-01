@@ -80,7 +80,7 @@ const mealinfoStyles = StyleSheet.create({
 
     scrollContainer: {
         paddingHorizontal: 10,
-        height: Dimensions.get('window').height * 0.9,
+        height: Dimensions.get('window').height * 0.20,
         width: Dimensions.get('window').width,
     },
 

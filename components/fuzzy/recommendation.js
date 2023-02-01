@@ -29,7 +29,7 @@ function recommendation(category) {
         lackgroup = 'GROW and GO';
         reminder = "Ohhhh! It appears that your meal lacks Go and Grow foods. To complete your wholesome meal, eat meals abundant in carbohydrates and protein.";
     }
-    if(category == 'GO and GROW' || category =='GROW and GLOW'){
+    if(category == 'GO and GROW' || category =='GROW and GO'){
         foods = getglow();
         lackgroup = 'GLOW';
         reminder = "A daily reminder dear user. It appears that your meal lacks Glow foods. To complete your wholesome meal, eat meals abundant in vitamins and minerals";

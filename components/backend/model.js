@@ -20,7 +20,7 @@ export const getModel = async () => {
         // wait until tensorflow is ready
         await tf.ready();
         // load the trained model
-        return await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeights));;
+        return await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeights));
     } catch (error) {
         console.log("Cannot load model. There has been an error: ", error);
     }

@@ -18,7 +18,7 @@ function recommendation(category) {
     if(category == 'GLOW'){
         foods = getglow();
     }
-    if(category == 'GO and GROW' || category =='GROW and GLOW'){
+    if(category == 'GO and GROW' || category =='GROW and GO'){
         food1 = getgrow();
         food2 = getgo();
         foods = food2.concat(food1);

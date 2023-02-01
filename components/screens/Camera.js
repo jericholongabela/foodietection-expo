@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ActivityIndicator, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -27,6 +27,11 @@ const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bic
                     "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
                     "Pork Afritada", "Rambutan", "Sisig", "Tinolang Manok", "Turon"]
 
+const names =   [
+                'Initializing the model...', 'Processing image...', 'Detecting foods...', 'Getting predictions...', 'Converting image input...', 'Calculating detection scores...',
+                'Initializing labels...'
+                ]
+                
 export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
@@ -36,6 +41,7 @@ export default function Cam(){
     const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
     const [ isPredicting, setIsPredicting ] = useState(false);
+    const [ loadingTexts, setLoadingText ] = useState("");
 
     // globalcontexts
     const { loadingModel, setLoadingModel } = useContext(Context);
@@ -45,6 +51,16 @@ export default function Cam(){
     const imgRef = useRef(null);
     const activityRef = useRef(null);
     const navigation = useNavigation();
+
+    const shuffle = useCallback(() => {
+        const index = Math.floor(Math.random() * names.length);
+        setLoadingText(names[index]);
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 3000);
+        return () => clearInterval(intervalID);
+    }, [shuffle])
 
     useEffect(() => {
         (async () => {
@@ -125,6 +141,8 @@ export default function Cam(){
         });
         
         if (!result.canceled && result!=null) {
+            //setLoadingText('Detecting foods...');
+            setIsPredicting(true);
             await processImagePrediction(result.assets[0]);
         } else {
             console.log("Image selection cancelled")
@@ -133,21 +151,21 @@ export default function Cam(){
     }
 
     const processImagePrediction = async (base64Image) => {
-        console.log("Loading model...");
+        console.log('loading model');
         const model = await getModel();
+        console.log('End of loading');
         //const croppedData = await cropPicture(base64Image);
         console.log("Converting image...");
         setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
-        
-        console.log("Getting output...");
+        //setLoadingText('Model start to predict image...');
         const output = model.executeAsync(tensor._z).then((output) => {
              const boxes = output[1].arraySync();
              const scores = output[5].arraySync();
              const classes = output[3].dataSync();
-             console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
-             console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
-             console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
+             //console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
+             //console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
+             //console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
             // console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
             // console.log('scores: ',scores[0][0]);
             // console.log('Classes: ',classes[0]);
@@ -181,18 +199,19 @@ export default function Cam(){
         const boxes = output[1].arraySync();
         const scores = output[5].arraySync();
         const classes = output[3].dataSync();
-        const threshold = 0.5;
+        const threshold = 0.3;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
-
+        
+        console.log('scores: ',scores);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
     }
 
     function buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES) {
         const detectionObjects = [];
-    
+        
         scores[0].forEach((score, i) => {
-            console.log('counter: ', score);
+        console.log('counter: ', score);
           if (score > threshold) {
             const bbox = [];
             // const minY = boxes[0][i][0] * imgRef.offsetTop;
@@ -215,8 +234,15 @@ export default function Cam(){
         })
         return detectionObjects
       }
-      
-
+      console.log('number of renders');
+    if(isPredicting){
+        return (
+        <ImageBackground source={require('../../assets/images/loadings.jpg')} resizeMode='cover' style={[styles.container]}>
+            <ActivityIndicator size="large" style={{backgroundColor: '#000000c0', height:75 , width:75, borderRadius:10,}} visible={isPredicting} color="#00ff00" />
+            <Text style={[styles.loadingText]}>{loadingTexts}</Text>
+        </ImageBackground>
+        )
+    }
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
@@ -228,6 +254,7 @@ export default function Cam(){
                 autoFocus={true}
             >
                 <View style={styles.cameraButtonsContainer}>
+                    
                     <TouchableOpacity onPress={() => {
                         selectImage();
                         setIsPredicting(true);
@@ -247,24 +274,22 @@ export default function Cam(){
                 </View>
             </Camera>
             :
+            (
+            isPredicting ? <ActivityIndicator size="large" styles = {styles.camera} visible={isPredicting} color={colors.primary_white} /> :
+            //isPredicting ? <ActivityIndicator size="large" visible={isPredicting} color={colors.primary_white} /> :
             //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
             //bale dito ang goal, gumawa ng container tapos ilagay don yung image sa loob or gawing background
             //tapos lalagyan mo ng canvas na dapat same height and width don sa ng image
             //parang ipapatong yun canvas sa image, dapat pantay na pantay para makuha yung tamang coordinates nung box
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
-            predictedResult ?
-                <View styles = {styles.camera}>
-                    <ActivityIndicator size="large" color={colors.red_shade_1} animating={isPredicting}/>
-                    <Text> Processing Image... </Text>
-                </View>
-            :
-                <View styles = {styles.camera}>
-                    <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
-                    <Canvas style={styles.canvas} ref={ref} ></Canvas>
-                    </ImageBackground>
-                </View>
-            }
+            //<Canvas style={styles.canvas} ref={ref} ></Canvas>
+            <View styles = {styles.camera}>
+                <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
+                
+                </ImageBackground>
+            </View>
+            )}
             <View style={styles.resultContainer}>
                 <View style={styles.cameraButtonsContainer}>
                     <TouchableOpacity onPress={()=>setImage(null)}>
@@ -300,6 +325,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    loadingText: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: '#FFFFFF',
+        marginTop: 50,
+        textAlign: 'center',
+    },
     resultText: {
         fontWeight: 'bold',
         fontSize: 24,
@@ -319,5 +351,10 @@ const styles = StyleSheet.create({
     canvas: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.7,
+    },
+    container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     },
 });

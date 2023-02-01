@@ -16,7 +16,7 @@ export default function MealInformation( props, ){
 
     const [foodData, setFoodData] = useState();
     const [calories, setCalories] = useState(0);
-    const [filename = 'filename.jpg', setFilename] = useState();
+    const [filename, setFilename] = useState();
     let category;
     const [lackfood, setLackFood] = useState();
     const [reminder, setReminder] = useState();
@@ -27,7 +27,10 @@ export default function MealInformation( props, ){
 
     const { predictedResult, setPredictedResult } = useContext(Context);
     const { foodrecommendation, setFoodRecommendation} = useContext(Context);
-    console.log(predictedResult);
+    let space = ' ', tempquery = '';
+    for(let i=0;i<Object.keys(predictedResult).length;i++){
+        tempquery = tempquery + space + predictedResult[i].label;
+    }
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
@@ -35,7 +38,7 @@ export default function MealInformation( props, ){
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": 'pork adobo orange'});
+    let jsonQuery = JSON.stringify({"query": tempquery});
 
     let request = new Request (url, {
         method: 'POST',
@@ -49,6 +52,7 @@ export default function MealInformation( props, ){
             .then((response) => response.json())
             .then((json) => {
                 setFoodData((json.foods));
+                setFilename('Filename.jpeg');
                 },
                 (error) => {
                     setLoading(false);
@@ -71,8 +75,12 @@ export default function MealInformation( props, ){
         let x = daily_value(item);
         category = x.category;
 
-        if(counter > 0)
-        tempcateg = tempcateg + joint + x.category;
+        if(counter > 0){
+            if(tempcateg == x.category)
+                tempcateg = tempcateg;
+            else
+                tempcateg = tempcateg + joint + x.category;
+        }
         else
         tempcateg = x.category;
         lack = recommendation(tempcateg);
@@ -136,7 +144,7 @@ export default function MealInformation( props, ){
                     {/* meal info goes here. */}
                     <View style={mealinfoStyles.totalCaloriesContainer}>
                         <Text style={mealinfoStyles.boldtextStyle}>
-                            Total Calories:        
+                            Total Calories:     
                         </Text>
                         <Text style={mealinfoStyles.boldtextStyle}>
                             {calories}  {/* Fetches the value of calories */}    
@@ -164,9 +172,8 @@ export default function MealInformation( props, ){
                         <Text style={mealinfoStyles.boldtextStyle}>
                         {reminder}
                         </Text>
-
+                        <ViewSuggestion/>
                     </View>
-                    <ViewSuggestion/>
                 </View>
             </ScrollView>
         </SafeAreaView>

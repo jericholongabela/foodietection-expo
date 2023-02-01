@@ -21,5 +21,6 @@ export default {
     white_shade_1: '#E9EAEB',
     brown: '#9C7163',
     gray_shade_1: '#00000029',
-    gray_shade_2: '#00000054'
+    gray_shade_2: '#00000054',
+    black: '#000000'
 }
