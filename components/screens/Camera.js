@@ -56,6 +56,7 @@ export default function Cam(){
 
     const ref = useRef(null);
     const imgRef = useRef(null);
+    const activityRef = useRef(null);
     const navigation = useNavigation();
 
     const shuffle = useCallback(() => {
@@ -89,7 +90,28 @@ export default function Cam(){
         ctx.font = "20px Verdana";
         ctx.fillText(label + " " + score*100+"%", bbox1, bbox2)
     }
-  },);
+  }, [ref]);
+
+  useEffect(() => {
+    console.log("Predicting? ", isPredicting);
+    if (isPredicting) {
+        predictingImage();
+    }
+  }, [isPredicting]);
+
+  function predictingImage (){
+    return (
+      <View style={styles.predictingImage}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.predictingText}>Predicting...</Text>
+      </View>
+    );
+  }
+
+  useEffect(() => {
+    setIsPredicting(false);
+    console.log("Predicting? ", isPredicting);
+  }, [predictedResult]);
 
     if (hasCameraPermission === undefined) {
         return <Text>No access to camera</Text>
@@ -126,16 +148,15 @@ export default function Cam(){
             base64: true,
             quality: 1,
         });
-
+        
         if (!result.canceled && result!=null) {
             //setLoadingText('Detecting foods...');
             setIsPredicting(true);
             await processImagePrediction(result.assets[0]);
-            setIsPredicting(false);
-            console.log("Is Predicting? ", isPredicting);
         } else {
             console.log("Image selection cancelled")
         }
+        setIsPredicting(false);
     }
 
     const processImagePrediction = async (base64Image) => {
@@ -143,6 +164,7 @@ export default function Cam(){
         const model = await getModel();
         console.log('End of loading');
         //const croppedData = await cropPicture(base64Image);
+        console.log("Converting image...");
         setImage(base64Image.uri);
         const tensor = convertBase64ToTensor(base64Image.base64);
         //setLoadingText('Model start to predict image...');
@@ -158,10 +180,11 @@ export default function Cam(){
             // console.log('Classes: ',classes[0]);
             // console.log(Dimensions.get('window').width);
             // console.log(Dimensions.get('window').height * 0.7);
+            console.log("Rendering output...");
             renderPredictions(output);
-            predictedResult.forEach((prediction, i) => {
-                setQuery((query) => [...query, prediction[i].label]);
-            });
+            // predictedResult.forEach((prediction, i) => {
+            //     setQuery((query) => [...query, prediction[i].label]);
+            // });
         });
         
 
@@ -238,7 +261,7 @@ export default function Cam(){
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
-            {!image ?
+            {!isPredicting && !image ?
             <Camera
                 style={styles.camera}
                 type={type}
@@ -249,10 +272,11 @@ export default function Cam(){
                     
                     <TouchableOpacity onPress={() => {
                         selectImage();
+                        setIsPredicting(true);
                     }}>
                         <MaterialCommunityIcons name="image" size={30} color={colors.primary_white} /> 
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={takePicture}>
+                    <TouchableOpacity onPress={saveImage}>
                         <MaterialCommunityIcons name="camera-iris" size={60} color={colors.primary_white} /> 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {

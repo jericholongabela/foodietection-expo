@@ -5,8 +5,8 @@ import colors from "../../assets/styles/colors";
 export default function NutritionLabel(
     {
     servingsPerContainer,
-    servingSize,
     servingUnit,
+    servingWeight,
     calories,
     totalFatAmount,
     totalFatPercentage,
@@ -43,7 +43,7 @@ export default function NutritionLabel(
                 <Text style={styles.ServingPerContainer}>{servingsPerContainer} servings per container</Text>
                 <View style={styles.ServingSizeContainer}>
                     <Text style={styles.ServingSizeLabel}>Serving Size</Text>
-                    <Text style={styles.ServingSize}>{servingUnit} ({servingSize})</Text>
+                    <Text style={styles.ServingSize}>{servingsPerContainer} {servingUnit} ({servingWeight}g)</Text>
                 </View>
             </View>
             <View style={styles.AmountPerServingContainer}>
@@ -62,7 +62,7 @@ export default function NutritionLabel(
                         <Text style={styles.MainNutrientLabel}>Total Fat</Text>
                         <Text style={styles.NutrientAmount}>{totalFatAmount}g</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{totalFatPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{totalFatPercentage}%</Text>
                 </View>
                 <View style={styles.SaturatedFatInfoContainer}>
                     <View style={styles.SaturatedFatLabelAmountContainer}>
@@ -83,28 +83,28 @@ export default function NutritionLabel(
                         <Text style={styles.MainNutrientLabel}>Cholesterol</Text>
                         <Text style={styles.NutrientAmount}>{cholesterolAmount}mg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{cholesterolPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{cholesterolPercentage}%</Text>
                 </View>
                 <View style={styles.SodiumInfoContainer}>
                     <View style={styles.SodiumLabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Sodium</Text>
                         <Text style={styles.NutrientAmount}>{sodiumAmount}mg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{sodiumPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{sodiumPercentage}%</Text>
                 </View>
                 <View style={styles.TotalCarbohydrateInfoContainer}>
                     <View style={styles.TotalCarbohydrateLabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Total Carbohydrate</Text>
                         <Text style={styles.NutrientAmount}>{totalCarbohydrateAmount}g</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{totalCarbohydratePercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{totalCarbohydratePercentage}%</Text>
                 </View>
                 <View style={styles.DietaryFiberInfoContainer}>
                     <View style={styles.DietaryFiberLabelAmountContainer}>
                         <Text style={styles.SubNutrientLabel}>Dietary Fiber</Text>
                         <Text style={styles.NutrientAmount}>{dietaryFiberAmount}g</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{dietaryFiberPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{dietaryFiberPercentage}%</Text>
                 </View>
                 <View style={styles.TotalSugarsInfoContainer}>
                     <View style={styles.TotalSugarsLabelAmountContainer}>
@@ -126,28 +126,28 @@ export default function NutritionLabel(
                         <Text style={styles.MainNutrientLabel}>Vitamin A</Text>
                         <Text style={styles.NutrientAmount}>{vitaminAAmount}μg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{vitaminAPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{vitaminAPercentage}%</Text>
                 </View>
                 <View style={styles.VitaminCInfoContainer}>
                     <View style={styles.VitaminCLabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Vitamin C</Text>
                         <Text style={styles.NutrientAmount}>{vitaminCAmount}mg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{vitaminCPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{vitaminCPercentage}%</Text>
                 </View>
                 <View style={styles.CalciumInfoContainer}>
                     <View style={styles.CalciumLabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Calcium</Text>
                         <Text style={styles.NutrientAmount}>{calciumAmount}mg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{calciumPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{calciumPercentage}%</Text>
                 </View>
                 <View style={styles.IronInfoContainer}>
                     <View style={styles.IronLabelAmountContainer}>
                         <Text style={styles.MainNutrientLabel}>Iron</Text>
                         <Text style={styles.NutrientAmount}>{ironAmount}mg</Text>
                     </View>
-                    <Text style={styles.PercentDailyValuePercentage}>{ironPercentage}</Text>
+                    <Text style={styles.PercentDailyValuePercentage}>{ironPercentage}%</Text>
                 </View>
             </View>
             <View style={styles.FooterContainer}>

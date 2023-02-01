@@ -41,7 +41,7 @@ export default function MealCard({foodName, foodCategory, foodServing, foodServi
     )
 }
 
-export function ViewSuggestion({foodCategory, }){
+export function ViewSuggestion({ foodCategory }){
     const { foodrecommendation, setFoodRecommendation} = useContext(Context);
     const [visible, setVisible] = useState (false);
     const toggleOverlay = () => {
