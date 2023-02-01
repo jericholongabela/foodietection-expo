@@ -8,7 +8,22 @@ import daily_value from '../fuzzy/daily_value';
 import { Context } from "../global_context/GlobalContext";
 import recommendation from '../fuzzy/recommendation';
 
+import {initializeApp} from 'firebase/app';
+import {getFirestore, setDoc, collection, doc, getDocs} from 'firebase/firestore';
+
 export default function MealInformation( props, ){
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdARsXA0l_w4DJPBLqrf9lVlOzd1keZz8",
+        authDomain: "foodietection.firebaseapp.com",
+        projectId: "foodietection",
+        storageBucket: "foodietection.appspot.com",
+        messagingSenderId: "247969464172",
+        appId: "1:247969464172:web:a8ce541df666d4e6e1fd49",
+        measurementId: "G-LDF9L2BM70"
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
     const { 
             onPress, 
             buttonText = 'View Suggestions',
@@ -27,18 +42,23 @@ export default function MealInformation( props, ){
 
     const { predictedResult, setPredictedResult } = useContext(Context);
     const { foodrecommendation, setFoodRecommendation} = useContext(Context);
+
+
     let space = ' ', tempquery = '';
     for(let i=0;i<Object.keys(predictedResult).length;i++){
         tempquery = tempquery + space + predictedResult[i].label;
     }
 
+
+    
+    console.log(tempquery);
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
     header.append('Content-Type', 'application/json')
     header.append('x-app-id', 'dc8f2b01')
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
-    let jsonQuery = JSON.stringify({"query": tempquery});
+    let jsonQuery = JSON.stringify({"query": "Pork Adobo tinola apple brocolli"});
 
     let request = new Request (url, {
         method: 'POST',
@@ -61,33 +81,70 @@ export default function MealInformation( props, ){
             )
             .finally(() => setLoading(false))    
     }, []);
+
+
+
+
     
     let tempCalories=0;
-
     function totalCalories(item){
         tempCalories+=item.nf_calories;
         tempCalories=Math.round(tempCalories);
         return setCalories(tempCalories);
     };
     let counter = 0, joint = ' and ', tempcateg ='', lack, lackfoodss;
+    const tempgroup = [];
+
+
+
+
 
     function fuzzyDaily(item){
+
         let x = daily_value(item);
         category = x.category;
-
+        if(counter > 0){
+            let x = 0;
+            for(let i=0;i<counter;i++){
+                if(tempgroup[i] == category)
+                    x = 1;
+            }
+            if(x == 0){
+                tempgroup[counter] = category;
+                if(tempgroup[counter] != "Cannot Determine"){
+                    tempcateg = tempcateg + joint + tempgroup[counter];
+                }
+            }
+        }
+        else{
+            tempgroup[counter] = category;
+            tempcateg = category;
+        }
+        console.log('Temp grouppppppppppppp',tempgroup);
+        /*console.log('Temp grouppppppppppppp',tempgroup);
         if(counter > 0){
             if(tempcateg == x.category)
                 tempcateg = tempcateg;
-            else
+            else{
+                if(x.category != "Cannot Determine")
                 tempcateg = tempcateg + joint + x.category;
+            }
         }
         else
         tempcateg = x.category;
+        */
+
         lack = recommendation(tempcateg);
         setFoodRecommendation(lack.lackgroup);
         setReminder(lack.reminder);
         lackfoodss = lack.foods;
         counter = counter+1;
+        console.log('tempcateg:', tempcateg);
+
+        const docRef = setDoc(doc(db, "users", item.food_name), {
+            foodgroup:x.category
+        })
+    
     };
     return (
         <SafeAreaView style={mealinfoStyles.screen}>

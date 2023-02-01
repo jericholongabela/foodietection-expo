@@ -179,8 +179,6 @@ export default function Cam(){
         const classes = output[3].dataSync();
         const threshold = 0.3;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
-        
-        console.log('scores: ',scores);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
     }
