@@ -84,7 +84,8 @@ export default function FoodInformation ( food ) {
                         </View>
                     </View>
                 </View>
-                { nutrients?
+                {
+                nutrients?
                 <NutritionLabel
                 servingsPerContainer = {nutrients.servingsPerContainer}
                 servingUnit = {nutrients.servingUnit}

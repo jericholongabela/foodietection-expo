@@ -36,15 +36,12 @@ export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
     const [ image, setImage ] = useState(null);
-    const [ imagess, setImagess ] = useState(null);
     const [ type, setType ] = useState(Camera.Constants.Type.back);
-    const [ mobilenetv3, setMobilenetv3 ] = useState();
     const cameraRef = useRef(null);
     const [ isPredicting, setIsPredicting ] = useState(false);
     const [ loadingTexts, setLoadingText ] = useState("");
 
     // globalcontexts
-    const { loadingModel, setLoadingModel } = useContext(Context);
     const { predictedResult, setPredictedResult } = useContext(Context);
 
     const ref = useRef(null);
@@ -73,13 +70,28 @@ export default function Cam(){
 
   useEffect(() => {
     if (ref.current) {
-      const ctx = ref.current.getContext('2d');
-      ctx.strokeStyle = "black";
-      Canvas.width = 500;
-      Canvas.height = 400;
-      ctx.lineWidth = 4;
-      ctx.strokeRect(10,10, 100,100);
-      ctx.strokeRect(70,90, 100,100);
+        const canvas = ref.current;
+        const context = canvas.getContext("2d");
+
+        // load image into canvas
+        // console.log("Data.uri is: ", data.uri)
+        // const inputImage = new Image();
+        // // inputImage.src = image;
+        // inputImage.onload = () => {
+        //     context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        // }
+        canvas.height = Dimensions.get('window').height * 0.7;
+        canvas.width = Dimensions.get('window').width;
+        context.strokeStyle = colors.red_shade_1;
+        context.lineWidth = 2;
+        context.strokeRect(100, 300, 150, 150);
+
+        // context.strokeStyle = "black";
+        // canvas.width = 500;
+        // canvas.height = 400;
+        // context.lineWidth = 4;
+        // context.strokeRect(10,10, 100,100);
+        // context.strokeRect(70,90, 100,100);
     }
   }, [ref]);
 
@@ -113,23 +125,31 @@ export default function Cam(){
     const takePicture = async () => {
         if(cameraRef){
             const data = await cameraRef.current.takePictureAsync({
-                based64: true,
+                base64: true,
             });
-            console.log("Taken image is: ", data);
+            //console.log("Taken image is: (64) ", data.base64);
+            setImage(data.uri)
+            setIsPredicting(true);
+            processImagePrediction(data);
+            saveImage(data.uri);
         }
     }
 
-    const saveImage = async () => {
+    const saveImage = async ( image ) => {
+        console.log("Saving image...")
+        console.log("Image is: ", image)
         if(image){
             try{
                 await MediaLibrary.createAssetAsync(image);
                 alert("Picture saved!🎉")
-                setImage(null);
+                console.log("Picture saved!🎉");
+                //setImage(null);
             } catch(e){
                 console.log(e);
             }
         }
-        navigation.navigate("Meal Information");
+        console.log("Done trying saving image...")
+        //navigation.navigate("Meal Information");
     }
 
     const selectImage = async () => {
@@ -235,17 +255,10 @@ export default function Cam(){
         return detectionObjects
       }
       console.log('number of renders');
-    if(isPredicting){
-        return (
-        <ImageBackground source={require('../../assets/images/loadings.jpg')} resizeMode='cover' style={[styles.container]}>
-            <ActivityIndicator size="large" style={{backgroundColor: '#000000c0', height:75 , width:75, borderRadius:10,}} visible={isPredicting} color="#00ff00" />
-            <Text style={[styles.loadingText]}>{loadingTexts}</Text>
-        </ImageBackground>
-        )
-    }
+    
     return (
         <View style={styles.screen}>
-            <StatusBar style="light" />
+        <StatusBar style="light" />
             {!isPredicting && !image ?
             <Camera
                 style={styles.camera}
@@ -261,7 +274,7 @@ export default function Cam(){
                     }}>
                         <MaterialCommunityIcons name="image" size={30} color={colors.primary_white} /> 
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={saveImage}>
+                    <TouchableOpacity onPress={takePicture}>
                         <MaterialCommunityIcons name="camera-iris" size={60} color={colors.primary_white} /> 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
@@ -275,7 +288,11 @@ export default function Cam(){
             </Camera>
             :
             (
-            isPredicting ? <ActivityIndicator size="large" styles = {styles.camera} visible={isPredicting} color={colors.primary_white} /> :
+            isPredicting ?
+            <ImageBackground source={require('../../assets/images/loadings.jpg')} resizeMode='cover' style={[styles.container]}>
+                <ActivityIndicator size="large" style={{backgroundColor: '#000000c0', height:75 , width:75, borderRadius:10,}} visible={isPredicting} color="#00ff00" />
+                <Text style={[styles.loadingText]}>{loadingTexts}</Text>
+            </ImageBackground> :
             //isPredicting ? <ActivityIndicator size="large" visible={isPredicting} color={colors.primary_white} /> :
             //<Canvas style={styles.canvas} ref={handleCanvas} ></Canvas>
             //bale dito ang goal, gumawa ng container tapos ilagay don yung image sa loob or gawing background
@@ -284,24 +301,27 @@ export default function Cam(){
             //kukunin yung height at width nung contianer or image tas imumultiply sa output ng model na coordinates para sakto sa object yung box
             //may useeffect hook sa taas para dun sa mga value nung box tas design, kinacopy ko muna yung value sa console log x, y width height kasi wala pa function nag magpapasa ng value
             //<Canvas style={styles.canvas} ref={ref} ></Canvas>
-            <View styles = {styles.camera}>
-                <ImageBackground source={{uri : image}} style={styles.camera} ref={imgRef} >
-                
-                </ImageBackground>
+            <View styles = {styles.canvas}>
+                <Canvas style={styles.canvas} ref={ref} />
             </View>
             )}
-            <View style={styles.resultContainer}>
-                <View style={styles.cameraButtonsContainer}>
-                    <TouchableOpacity onPress={()=>setImage(null)}>
-                        <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={saveImage}>
-                        <MaterialCommunityIcons name="check-circle-outline" size={60} 
-                        color={colors.green_shade_2}/> 
-                    </TouchableOpacity>
+            {
+                image ?
+                <View style={styles.resultContainer}>
+                    <View style={styles.cameraButtonsContainer}>
+                        <TouchableOpacity onPress={()=>setImage(null)}>
+                            <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={saveImage}>
+                            <MaterialCommunityIcons name="check-circle-outline" size={60} 
+                            color={colors.green_shade_2}/> 
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <NavigationBar />
+                : null
+            }
+            
+            {/* <NavigationBar /> */}
         </View>
     )
 }
@@ -310,12 +330,12 @@ const styles = StyleSheet.create({
     screen: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        backgroundColor: colors.primary_white,
+        backgroundColor: colors.primary_black,
         alignItems: 'center',
     },
     camera : {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.7,
+        height: Dimensions.get('window').height * 0.83,
         justifyContent: 'flex-end',
     },
     resultContainer : {
@@ -349,12 +369,13 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height * 0.7,
     },
     canvas: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.7,
+        backgroundColor: colors.green_shade_2,
     },
     container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.92,
     },
 });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View, Text, TextInput, StyleSheet, Dimensions, ActivityIndicator, FlatList } from 'react-native'
 
-import NavigationBar from '../modules/NavigationBar'
+import { StatusBar } from "expo-status-bar";
 import SearchResult from '../modules/searchResult'
 import colors from '../../assets/styles/colors'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -56,6 +56,7 @@ export default function Search( props ){
 
     return (
         <SafeAreaView style={styles.screen}>
+        <StatusBar />
             <View style={styles.mainBody}>
                 <TextInput 
                     style={styles.input}
@@ -99,7 +100,7 @@ export default function Search( props ){
                     </View>  
                 </View>
             </View>
-        <NavigationBar />
+        {/* <NavigationBar /> */}
         </SafeAreaView>
     )
 }

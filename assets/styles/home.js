@@ -9,7 +9,6 @@ const homeStyles = StyleSheet.create({
         alignItems: 'center',
     },
     scrollContainer: {
-        paddingHorizontal: 10,
         height: Dimensions.get('window').height * .85,
         width: Dimensions.get('window').width,
     },
@@ -32,6 +31,7 @@ const homeStyles = StyleSheet.create({
     },
     headerStyle: {
         //fontFamily: 'Montserrat-Bold',
+        fontWeight: 'bold',
         fontSize: 16,
         color: colors.primary_black,
     },

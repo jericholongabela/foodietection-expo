@@ -3,8 +3,8 @@ import colors from './colors';
 
 const overlayStyles = StyleSheet.create({
     overlay: {
-        width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').height * 0.9,
+        width: Dimensions.get('window').width * 0.8,
+        height: Dimensions.get('window').height * 0.8,
         borderRadius: 10,
         backgroundColor: colors.primary_white,
     },
