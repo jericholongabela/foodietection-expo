@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
 
     SearchArea: {
-        height: Dimensions.get('window').height * 0.60,
+        height: Dimensions.get('window').height * 0.575,
     },
 
     MoreInformation: {

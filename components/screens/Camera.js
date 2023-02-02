@@ -80,14 +80,14 @@ export default function Cam(){
         ref.current.width = Dimensions.get('window').width;
         ref.current.height = Dimensions.get('window').height * 0.7;
         const ctx = ref.current.getContext('2d');
-        ctx.strokeStyle = "green";
+        ctx.strokeStyle = colors.green_shade_1;
         ctx.lineWidth = 4;
         ctx.strokeRect(bbox1,bbox2, bbox3, bbox4);
-        ctx.fillStyle = "#00FF00";
+        // ctx.fillStyle = "#00FF00";
         ctx.font = "20px Verdana";
-        ctx.fillText(label + " " + score*100+"%", bbox1, bbox2)
+        ctx.fillText(label + " " + Math.round(score*100) +"%", bbox1, bbox2)
     }
-  }, [ref]);
+  }, []);
 
   useEffect(() => {
     console.log("Predicting? ", isPredicting);
@@ -125,11 +125,10 @@ export default function Cam(){
             setImage(data.uri)
             setIsPredicting(true);
             processImagePrediction(data);
-            saveImage(data.uri);
         }
     }
 
-    const saveImage = async ( image ) => {
+    const saveImage = async ( ) => {
         console.log("Saving image...")
         console.log("Image is: ", image)
         if(image){
@@ -213,7 +212,7 @@ export default function Cam(){
         const boxes = output[1].arraySync();
         const scores = output[5].arraySync();
         const classes = output[3].dataSync();
-        const threshold = 0.4;
+        const threshold = 0.5;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
@@ -254,15 +253,13 @@ export default function Cam(){
         return detectionObjects
       }
       console.log('number of renders');
-    if(isPredicting){
-        return (
-        <ImageBackground source={require('../../assets/images/loadings.jpg')} resizeMode='cover' style={[styles.container]}>
-            <ActivityIndicator size="large" style={{backgroundColor: '#000000c0', height:75 , width:75, borderRadius:10,}} visible={isPredicting} color="#00ff00" />
-            <Text style={[styles.loadingText]}>{loadingTexts}</Text>
-        </ImageBackground>
-        )
-    }
     console.log(bbox1);
+
+      function reset () {
+        setImage(null);
+        setlabel(null);
+      }
+
     return (
         <View style={styles.screen}>
         <StatusBar style="light" />
@@ -315,19 +312,20 @@ export default function Cam(){
             </View>
             )}
             {
-                image ?
+                !image ?
                 <View style={styles.resultContainer}>
-                    <View style={styles.cameraButtonsContainer}>
-                        <TouchableOpacity onPress={()=>setImage(null)}>
+                    <Text style={{fontWeight: 'bold', color: colors.primary_white, fontSize: 20}}>Capture to start scanning</Text>
+                </View>
+                : 
+                <View style={styles.cameraButtonsContainer}>
+                        <TouchableOpacity onPress={()=> reset() }>
                             <MaterialCommunityIcons name="camera-retake" size={60} color={colors.red_shade_2} /> 
                         </TouchableOpacity>
                         <TouchableOpacity onPress={saveImage}>
                             <MaterialCommunityIcons name="check-circle-outline" size={60} 
                             color={colors.green_shade_2}/> 
                         </TouchableOpacity>
-                    </View>
                 </View>
-                : null
             }
             
             {/* <NavigationBar /> */}
@@ -344,12 +342,12 @@ const styles = StyleSheet.create({
     },
     camera : {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.83,
+        height: Dimensions.get('window').height * 0.7,
         justifyContent: 'flex-end',
     },
     resultContainer : {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.15,
+        height: Dimensions.get('window').height * 0.13,
         backgroundColor: colors.primary_black,
         alignItems: 'center',
         justifyContent: 'center',
@@ -378,7 +376,6 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height * 0.7,
     },
     canvas: {
-        backgroundColor: colors.green_shade_2,
     },
     container: {
     flex: 1,
