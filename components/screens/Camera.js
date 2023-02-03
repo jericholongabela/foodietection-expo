@@ -55,7 +55,7 @@ export default function Cam(){
     const imgRef = useRef(null);
     const activityRef = useRef(null);
     const navigation = useNavigation();
-
+    /*
     const shuffle = useCallback(() => {
         const index = Math.floor(Math.random() * names.length);
         setLoadingText(names[index]);
@@ -65,7 +65,7 @@ export default function Cam(){
         const intervalID = setInterval(shuffle, 3000);
         return () => clearInterval(intervalID);
     }, [shuffle])
-
+    */
     useEffect(() => {
         (async () => {
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -74,41 +74,47 @@ export default function Cam(){
             setHasMediaLibraryPermission(MediaLibraryPermission.status === "granted");
         })();
     }, []);
-    
-  useEffect(() => {
+    let ctx;
+    useEffect(() => {
     if (ref.current) {
         ref.current.width = Dimensions.get('window').width;
         ref.current.height = Dimensions.get('window').height * 0.7;
-        const ctx = ref.current.getContext('2d');
-        ctx.strokeStyle = colors.green_shade_1;
-        ctx.lineWidth = 4;
-        ctx.strokeRect(bbox1,bbox2, bbox3, bbox4);
-        // ctx.fillStyle = "#00FF00";
-        ctx.font = "20px Verdana";
-        ctx.fillText(label + " " + Math.round(score*100) +"%", bbox1, bbox2)
+        ctx = ref.current.getContext('2d');
+        addrect();
+        }
+    },);
+
+    useEffect(() => {
+        console.log("Predicting? ", isPredicting);
+        if (isPredicting) {
+            predictingImage();
+        }
+    }, [isPredicting]);
+
+    function addrect(){
+        
+        for(let i=0;i<Object.keys(predictedResult).length;i++){
+            ctx.strokeStyle = colors.green_shade_1;
+            ctx.lineWidth = 4;
+            ctx.strokeRect(predictedResult[i].bbox[0],predictedResult[i].bbox[1],predictedResult[i].bbox[2], predictedResult[i].bbox[3]);
+            ctx.font = "20px Verdana";
+            ctx.fillText(predictedResult[i].label + " " + Math.round(predictedResult[i].score*100) +"%", predictedResult[i].bbox[0], predictedResult[i].bbox[1]);
+        }
     }
-  }, []);
 
-  useEffect(() => {
-    console.log("Predicting? ", isPredicting);
-    if (isPredicting) {
-        predictingImage();
+    function predictingImage (){
+        return (
+        <View style={styles.predictingImage}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={styles.predictingText}>Predicting...</Text>
+        </View>
+        );
     }
-  }, [isPredicting]);
 
-  function predictingImage (){
-    return (
-      <View style={styles.predictingImage}>
-        <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={styles.predictingText}>Predicting...</Text>
-      </View>
-    );
-  }
-
-  useEffect(() => {
-    setIsPredicting(false);
-    console.log("Predicting? ", isPredicting);
-  }, [predictedResult]);
+    useEffect(() => {
+        setIsPredicting(false);
+        console.log("Predicting? ", isPredicting);
+    }, [predictedResult]);
 
     if (hasCameraPermission === undefined) {
         return <Text>No access to camera</Text>
@@ -125,6 +131,7 @@ export default function Cam(){
             setImage(data.uri)
             setIsPredicting(true);
             processImagePrediction(data);
+            setLoadingText("Loading");
         }
     }
 
@@ -142,7 +149,7 @@ export default function Cam(){
             }
         }
         console.log("Done trying saving image...")
-        //navigation.navigate("Meal Information");
+        navigation.navigate("Meal Information");
     }
 
     const selectImage = async () => {
@@ -190,29 +197,13 @@ export default function Cam(){
             //     setQuery((query) => [...query, prediction[i].label]);
             // });
         });
-        
-
-        // model.detect(tensor).then((predictions) => {
-        //     // Drawing the rectangles
-
-        // }).catch((Error) => {
-        //     console.log(Error);
-        // });
-
-        // setIsPredicting(true);
-        // const prediction = await startPrediction(model, tensor);
-        // setIsPredicting(false);
-        // const highestProbability = prediction.indexOf(Math.max.apply(null, prediction));
-        // setPredictedResult(FOOD_CLASSES[highestProbability]);
-        // console.log(predictedResult);
-        //requestAnimationFrame(processImagePrediction);
     }
 
     const renderPredictions = (output) => {
         const boxes = output[1].arraySync();
         const scores = output[5].arraySync();
         const classes = output[3].dataSync();
-        const threshold = 0.5;
+        const threshold = 0.4;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
         setPredictedResult(detections);
         console.log("Detections: ", detections);
@@ -225,8 +216,6 @@ export default function Cam(){
           if (score > threshold) {
             const bbox = [];
             console.log(score);
-            // const minY = boxes[0][i][0] * imgRef.offsetTop;
-            // const minX = boxes[0][i][1] * imgRef.offsetLeft;
             const minY = boxes[0][i][0] * Dimensions.get('window').height * 0.7;
             const minX = boxes[0][i][1] * Dimensions.get('window').width;
             const maxY = boxes[0][i][2] * Dimensions.get('window').height * 0.7;
