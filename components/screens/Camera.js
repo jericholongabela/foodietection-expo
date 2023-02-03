@@ -55,17 +55,17 @@ export default function Cam(){
     const imgRef = useRef(null);
     const activityRef = useRef(null);
     const navigation = useNavigation();
-    /*
+    
     const shuffle = useCallback(() => {
         const index = Math.floor(Math.random() * names.length);
         setLoadingText(names[index]);
     }, []);
 
     useEffect(() => {
-        const intervalID = setInterval(shuffle, 3000);
+        const intervalID = setInterval(shuffle, 1000);
         return () => clearInterval(intervalID);
     }, [shuffle])
-    */
+    
     useEffect(() => {
         (async () => {
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
