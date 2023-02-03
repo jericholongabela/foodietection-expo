@@ -62,7 +62,7 @@ export default function Cam(){
     }, []);
 
     useEffect(() => {
-        const intervalID = setInterval(shuffle, 1000);
+        const intervalID = setInterval(shuffle, 3000);
         return () => clearInterval(intervalID);
     }, [shuffle])
     
