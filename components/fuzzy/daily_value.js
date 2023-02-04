@@ -21,7 +21,6 @@ example:
 
 function daily_value(json) {
   let calories_from_fat = Math.round(json.nf_total_fat * 9 );
-  console.log("I am calories", calories_from_fat);
   let total_fat = Math.round(json.nf_total_fat / 65 * 100);
   let saturated_fat = Math.round(json.nf_saturated_fat / 20 * 100);
   let cholesterol = Math.round(json.nf_cholesterol / 300 * 100 );
@@ -33,33 +32,54 @@ function daily_value(json) {
   let vitaminC;
   let calcium;
   let iron;
+
+  let fuzzyvitA;
+  let fuzzyvitC;
+  let fuzzycalcium;
+  let fuzzyiron
+  let totalfat = json.nf_total_fat;
+
   for(let i=0; i< 100; i++){
     if(json.full_nutrients[i].attr_id == 318){
+      let mcg = json.full_nutrients[i].value * 0.3;
+      let g = mcg / 1000000;
+      fuzzyvitA = g;
       vitaminA = Math.round((json.full_nutrients[i].value / 5000 * 100 )* 10) / 10;
       break;
     }
   }
   for(let i=0; i< 100; i++){
     if(json.full_nutrients[i].attr_id == 401){
+      let mg = json.full_nutrients[i].value;
+      let g = mg / 1000;
+      fuzzyvitC  = g;
       vitaminC = Math.round((json.full_nutrients[i].value / 60 * 100 )* 10) / 10;
       break;
     }
   }
   for(let i=0; i< 100; i++){
     if(json.full_nutrients[i].attr_id == 301){
+      let mg = json.full_nutrients[i].value;
+      let g = mg / 1000;
+      fuzzycalcium = g;
       calcium = Math.round((json.full_nutrients[i].value / 1300 * 100 )* 10) / 10;
       break;
     }
   }
   for(let i=0; i< 100; i++){
     if(json.full_nutrients[i].attr_id == 303){
+      let mg = json.full_nutrients[i].value;
+      let g = mg / 1000;
+      fuzzyiron = g;
       iron = Math.round(json.full_nutrients[i].value / 18 * 100 );
       break;
     }
   }
 
 
-  let category = fuzzy(json.serving_weight_grams, json.nf_total_carbohydrate, json.nf_protein, vitaminA, vitaminC);
+
+
+  let category = fuzzy(json.serving_weight_grams, json.nf_total_carbohydrate, json.nf_protein, vitaminA, vitaminC, totalfat, fuzzyvitA, fuzzyvitC, fuzzycalcium, fuzzyiron);
   //let recommend = recommendation(recommedationinput);
   //let reminders = recommend.reminder;
   //let recommendedfoods = recommend.foods;

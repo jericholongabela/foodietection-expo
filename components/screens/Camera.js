@@ -25,7 +25,7 @@ const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bic
                     "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Fried Rice", "Grapes", 
                     "Halo Halo", "Kaldereta", "Kiwi", "Laing", "Leche Flan", "Lemon", "Liempo", "Longganisa", "Lumpia",
                     "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
-                    "Pork Afritada", "Rambutan", "Sisig", "Tinolang Manok", "Turon"]
+                    "Pork Afritada", "Rambutan", "Sisig", "Tinola", "Turon"]
 
 const names =   [
                 'Initializing the model...', 'Processing image...', 'Detecting foods...', 'Getting predictions...', 'Converting image input...', 'Calculating detection scores...',
@@ -215,7 +215,6 @@ export default function Cam(){
         scores[0].forEach((score, i) => {
           if (score > threshold) {
             const bbox = [];
-            console.log(score);
             const minY = boxes[0][i][0] * Dimensions.get('window').height * 0.7;
             const minX = boxes[0][i][1] * Dimensions.get('window').width;
             const maxY = boxes[0][i][2] * Dimensions.get('window').height * 0.7;
@@ -241,8 +240,7 @@ export default function Cam(){
         })
         return detectionObjects
       }
-      console.log('number of renders');
-    console.log(bbox1);
+ 
 
       function reset () {
         setImage(null);

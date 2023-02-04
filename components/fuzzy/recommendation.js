@@ -42,7 +42,7 @@ function recommendation(category) {
     if(category == 'GROW and GLOW' || category =='GLOW and GROW'){
         foods = getgo();
         lackgroup = 'GO';
-        reminder = "We advise eating foods high in carbohydrates to complete your balanced diet as it appears that your meal lacks G0 foods.";
+        reminder = "We advise eating foods high in carbohydrates to complete your balanced diet as it appears that your meal lacks GO foods.";
     }
     if(category == 'GO and GLOW and GROW' || category =='GO and GROW and GLOW'||category =='GROW and GO and GLOW'||category =='GROW and GLOW and GO' || category =='GLOW and GO and GROW'||category =='GLOW and GROW and GO'){
         lackgroup = 'NONE';
