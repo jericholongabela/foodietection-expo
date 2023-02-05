@@ -51,12 +51,12 @@ export default function MealInformation( props, ){
 
 
     
-    console.log(tempquery);
+
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
     header.append('Content-Type', 'application/json')
-    header.append('x-app-id', 'dc8f2b01')
-    header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
+    header.append('x-app-id', 'b8abbafb')
+    header.append('x-app-key', 'ad0ca84860d6a22c96efe16bcf9366d8')
 
     let jsonQuery = JSON.stringify({"query": tempquery});
     console.log("Querying this:", jsonQuery);
@@ -121,7 +121,7 @@ export default function MealInformation( props, ){
             tempgroup[counter] = category;
             tempcateg = category;
         }
-        console.log('Temp grouppppppppppppp',tempgroup);
+    
         /*console.log('Temp grouppppppppppppp',tempgroup);
         if(counter > 0){
             if(tempcateg == x.category)
@@ -140,7 +140,7 @@ export default function MealInformation( props, ){
         setReminder(lack.reminder);
         lackfoodss = lack.foods;
         counter = counter+1;
-        console.log('tempcateg:', tempcateg);
+        
 
         const docRef = setDoc(doc(db, "users", item.food_name), {
             foodgroup:x.category
