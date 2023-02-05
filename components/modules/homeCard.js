@@ -19,6 +19,12 @@ export default function HomeCard( { textProps } ){
         if (textProps == "The Developers") {
             navigation.navigate("About Foodietection 3")
         }
+        if (textProps == "Who is the FNRI?") {
+            navigation.navigate("About Foodietection 4")
+        }
+        if (textProps == "What is the Go, Grow, Glow?") {
+            navigation.navigate("About Foodietection 5")
+        }
     }
 
     return (

@@ -59,6 +59,7 @@ export default function MealInformation( props, ){
     header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
 
     let jsonQuery = JSON.stringify({"query": tempquery});
+    console.log("Querying this:", jsonQuery);
 
     let request = new Request (url, {
         method: 'POST',
@@ -149,7 +150,8 @@ export default function MealInformation( props, ){
     return (
         <SafeAreaView style={mealinfoStyles.screen}>
             <Header textProps={"Meal Information"} />
-            <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}>
+            {/* <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}> */}
+            <View>
                 <View style={mealinfoStyles.mealThumbContainer}>
                     <View style={mealinfoStyles.mealThumbSecondContainer}>
                         <Image source={"../assets/images/DOST_FNRI_logo.png"} style={mealinfoStyles.thumbnailImage} resizeMode={'contain'}/> 
@@ -232,7 +234,8 @@ export default function MealInformation( props, ){
                         <ViewSuggestion/>
                     </View>
                 </View>
-            </ScrollView>
+            {/* </ScrollView> */}
+            </View>
         </SafeAreaView>
     )
 }

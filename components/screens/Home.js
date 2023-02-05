@@ -28,7 +28,7 @@ export default function Home(){
 
     return (
         <SafeAreaView style={homeStyles.screen}>
-            <StatusBar />
+            <StatusBar style='light' />
             <ScrollView nestedScrollEnabled={true} style={homeStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View name='About Foodietection'>
                     <LinearGradient colors={[colors.green_shade_3, '#FFFFFF']}

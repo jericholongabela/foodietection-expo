@@ -17,6 +17,8 @@ import FoodInformation from "../screens/FoodInformation";
 import AboutFoodietectionPage1 from "../screens/AboutPage1";
 import AboutFoodietectionPage2 from "../screens/AboutPage2";
 import AboutFoodietectionPage3 from "../screens/AboutPage3";
+import AboutFoodietectionPage4 from "../screens/AboutPage4";
+import AboutFoodietectionPage5 from "../screens/AboutPage5";
 
 const Stack = createStackNavigator();
 
@@ -80,6 +82,32 @@ export default function Navigator(props) {
                 headerTintColor: colors.yellow_shade_3,
                 }} />
             <Stack.Screen name="About Foodietection 3" component={AboutFoodietectionPage3} options={{
+                headerShown:true,
+                title: 'About Foodietection',
+                headerStyle: {
+                    backgroundColor: colors.primary_white,
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                    color: colors.primary_black,
+                    fontSize: 18,
+                },
+                headerTintColor: colors.yellow_shade_3,
+                }} />
+            <Stack.Screen name="About Foodietection 4" component={AboutFoodietectionPage4} options={{
+                headerShown:true,
+                title: 'About Foodietection',
+                headerStyle: {
+                    backgroundColor: colors.primary_white,
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                    color: colors.primary_black,
+                    fontSize: 18,
+                },
+                headerTintColor: colors.yellow_shade_3,
+                }} />
+            <Stack.Screen name="About Foodietection 5" component={AboutFoodietectionPage5} options={{
                 headerShown:true,
                 title: 'About Foodietection',
                 headerStyle: {

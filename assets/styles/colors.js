@@ -2,6 +2,7 @@
 // that we will use across our application
 
 export default {
+    primary_blue: '#ACC1DF',
     red_shade_1: '#E74652',
     red_shade_2: '#D13B4D',
     pink: '#F191AA',
