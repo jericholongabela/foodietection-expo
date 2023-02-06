@@ -9,6 +9,7 @@ import {getFoodNutrients} from "../modules/getFoodNutrients";
 import colors from "../../assets/styles/colors";
 import daily_value from "../fuzzy/daily_value";
 
+
 export default function FoodInformation ( food ) {
 
     let [isLoading, setLoading] = useState(true);
@@ -43,6 +44,7 @@ export default function FoodInformation ( food ) {
     let [vitaminAPercentage, setvitaminAPercentage] = useState();
     let [vitaminCAmount, setvitaminCAmount] = useState();
     let [vitaminCPercentage, setvitaminCPercentage] = useState();
+    let [foodgroup, setFoodgroup]  = useState();
 
 
 
@@ -113,6 +115,10 @@ export default function FoodInformation ( food ) {
         setvitaminCPercentage(x.vitaminCPercentage);
         
         setNutrients(x);
+        let y = daily_value(foodInfo[0]);
+        setFoodgroup(y.category);
+      
+
     }
     console.log("reder---------------------------------------------------", calciumAmount);
     useEffect(() => {
@@ -128,7 +134,7 @@ export default function FoodInformation ( food ) {
                     <View style={styles.foodNameCategoryContainer}>
                         <Text style={styles.foodName}>{food.route.params.data}</Text>
                         <View style={styles.foodCategoryContainer}>
-                            <Text style={styles.foodCategory}>wala pa</Text>
+                            <Text style={styles.foodCategory}>{foodgroup}</Text>
                             <TouchableOpacity>
                                 <Icon name="help-outline" type="material" size={26} style={styles.helpIcon} />
                             </TouchableOpacity>
