@@ -29,7 +29,7 @@ export default function AboutFoodietectionPage3( props ){
                     </View>
                     <View style={styles.developerContainer}>
                         <View style={{alignItems: 'center',}}>
-                            <Image source={require('../../assets/images/Developers/JessieID.png')} style={styles.developerImage}/>
+                            <Image source={require('../../assets/images/Developers/VincentID.jpg')} style={styles.developerImage}/>
                             <Text style={styles.developerText}>Mark Vincent{'\n'}Divida</Text>
                         </View>
                         

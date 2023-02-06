@@ -180,15 +180,15 @@ export default function Cam(){
         const tensor = convertBase64ToTensor(base64Image.base64);
         //setLoadingText('Model start to predict image...');
         const output = model.executeAsync(tensor._z).then((output) => {
-             const boxes = output[1].arraySync();
-             const scores = output[5].arraySync();
-             const classes = output[3].dataSync();
+             const boxes = output[5].arraySync();
+             const scores = output[3].arraySync();
+             const classes = output[0].dataSync();
              console.log('Boxes-y: ',boxes[0][0][0] * Dimensions.get('window').height * 0.7);
              console.log('Boxes-x: ',boxes[0][0][1] * Dimensions.get('window').width);
              console.log('Boxes-width: ',boxes[0][0][2] * Dimensions.get('window').height * 0.7 - boxes[0][0][0] * Dimensions.get('window').height * 0.7 );
             console.log('Boxes-height: ',boxes[0][0][3] * Dimensions.get('window').width - boxes[0][0][1] * Dimensions.get('window').width);
-            // console.log('scores: ',scores[0][0]);
-            // console.log('Classes: ',classes[0]);
+             console.log('scores: ',scores[0][0]);
+             console.log('Classes: ',classes[0]);
             // console.log(Dimensions.get('window').width);
             // console.log(Dimensions.get('window').height * 0.7);
             console.log("Rendering output...");
@@ -200,10 +200,10 @@ export default function Cam(){
     }
 
     const renderPredictions = (output) => {
-        const boxes = output[1].arraySync();
-        const scores = output[5].arraySync();
-        const classes = output[3].dataSync();
-        const threshold = 0.5;
+        const boxes = output[5].arraySync();
+        const scores = output[3].arraySync();
+        const classes = output[0].dataSync();
+        const threshold = 0.4;
         const detections = buildDetectedObjects(scores, threshold, boxes, classes, FOOD_CLASSES);
         setPredictedResult(detections);
         console.log("Detections: ", detections);

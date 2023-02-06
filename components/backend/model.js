@@ -7,8 +7,8 @@ import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import { Base64Binary } from './utils';
 import { Context } from '../global_context/GlobalContext';
 
-const modelJson = require('../../assets/model/model.json');
-const modelWeights = require('../../assets/model/mobilenetv3.bin');
+const modelJson = require('../../assets/models/model.json');
+const modelWeights = require('../../assets/models/mobilenetv3.bin');
 
 // 0: channel from JPEG-encoded image
 // 1: gray scale
