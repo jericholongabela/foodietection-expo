@@ -1,6 +1,6 @@
 { "foodgroup": [
-    {"name":"GO", "foods":[{"food":"Rice"}, {"food":"Cereal"}, {"food":"Potato"}, {"food":"kamote"}, {"food":"tinapay"}]},
-    {"name":"GROW", "foods":[{"food":"adobo"}, {"food":"kaldereta"}, {"food":"Tinola"}, {"food":"Steak"}]},
-    {"name":"GLOW", "foods":[{"food":"brocolli"}, {"food":"cauliflower"}, {"food":"Orange"}, {"food":"Malungay"}, {"food":"Manga"}]},
+    {"name":"GO", "foods":[{"food":"Rice"}, {"food":"Arroz caldo"}, {"food":"Corn"}, {"food":"Pandesal"}, {"food":"Sweet Potato"}, {"food":"Bread"}, {"food":"Banana"}]},
+    {"name":"GROW", "foods":[{"food":"Balut"}, {"food":"Bicol express"}, {"food":"Chicharon"}, {"food":"Crispy Pata"}, {"food":"Pork Adobo"}, {"food":"Bulalo"}, {"food":"Egg"}, {"food":"Pork Belly"}]},
+    {"name":"GLOW", "foods":[{"food":"Brocolli"}, {"food":"Cauliflower"}, {"food":"Orange"}, {"food":"Avocado"}, {"food":"Manga"}, {"food":"Blueberry"}, {"food":"Pinakbet"}, {"food":"Laing"}]},
     {"name":"None", "foods": ["None"]}
   ]}
