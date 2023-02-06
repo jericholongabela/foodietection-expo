@@ -25,6 +25,12 @@ export default function HomeCard( { textProps } ){
         if (textProps == "What is the Go, Grow, Glow?") {
             navigation.navigate("About Foodietection 5")
         }
+        if (textProps == "What are Nutritional Facts?") {
+            navigation.navigate("About Foodietection 6")
+        }
+        if (textProps == "How can Nutritional Facts help me in my diet?") {
+            navigation.navigate("About Foodietection 7")
+        }
     }
 
     return (

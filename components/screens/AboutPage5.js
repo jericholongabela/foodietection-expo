@@ -28,7 +28,12 @@ export default function AboutFoodietectionPage5( props ){
                     <Text style={styles.bodyText}>
                         <Image source={require('../../assets/images/Grow.jpg')} style={{width: Dimensions.get('screen').width* .9, height: Dimensions.get('screen').height*.3, resizeMode: 'contain', alignSelf: 'center', marginVertical: 10,}}/>
                         <Text style={{fontWeight: 'bold', color: colors.red_shade_2}}>{'\n'}Grow foods</Text>
-                        <Text> are the type of food that provide fuel and help us ‘go’ and be active. Examples of ‘Go’ foods include bread, rice, pasta, cereals and potato. These foods give our muscles fuel to run, swim, jump, cycle and our brain fuel to concentrate. If we don’t eat enough ‘Go’ foods then we can feel tired and won’t have enough fuel to get through the day. It’s important to include ‘Go’ foods at all meals and especially breakfast so that our body and brain can get ready for the busy school day ahead.</Text>
+                        <Text> are the type of food that provide fuel and help us ‘go’ and be active. Examples of ‘Go’ foods include bread, rice, pasta, cereals and potato. These foods give our muscles fuel to run, swim, jump, cycle and our brain fuel to concentrate. If we don’t eat enough ‘Go’ foods then we can feel tired and won’t have enough fuel to get through the day. It’s important to include ‘Go’ foods at all meals and especially breakfast so that our body and brain can get ready for the busy school day ahead.{'\n'}</Text>
+                    </Text>
+                    <Text style={styles.bodyText}>
+                        <Image source={require('../../assets/images/Glow.png')} style={{width: Dimensions.get('screen').width* .9, height: Dimensions.get('screen').height*.3, resizeMode: 'contain', alignSelf: 'center', marginVertical: 10,}}/>
+                        <Text style={{fontWeight: 'bold', color: colors.green_shade_3}}>{'\n'}Glow foods</Text>
+                        <Text> are full of vitamins and minerals to keep our skin, hair and eyes bright and glowing. ‘Glow’ foods can keep our immune system strong so that we can fight bugs and viruses. Examples of ‘Glow’ foods include all fruits and vegetables. Brightly coloured fruits and vegetables are full of vitamins and minerals and we need to eat different types every day. What did you eat yesterday – were there lots of different coloured fruit and vegetables? Try and eat fruit and vegetables from every colour of the rainbow are to make sure you’re getting enough ‘Glow’ foods.</Text>
                     </Text>
                 </View>
             </ScrollView>
