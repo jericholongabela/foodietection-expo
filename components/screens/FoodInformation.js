@@ -9,8 +9,24 @@ import {getFoodNutrients} from "../modules/getFoodNutrients";
 import colors from "../../assets/styles/colors";
 import daily_value from "../fuzzy/daily_value";
 
+import {initializeApp} from 'firebase/app';
+import {getFirestore, setDoc, collection, doc, getDocs} from 'firebase/firestore';
+
 
 export default function FoodInformation ( food ) {
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdARsXA0l_w4DJPBLqrf9lVlOzd1keZz8",
+        authDomain: "foodietection.firebaseapp.com",
+        projectId: "foodietection",
+        storageBucket: "foodietection.appspot.com",
+        messagingSenderId: "247969464172",
+        appId: "1:247969464172:web:a8ce541df666d4e6e1fd49",
+        measurementId: "G-LDF9L2BM70"
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
 
     let [isLoading, setLoading] = useState(true);
     const [nutrients, setNutrients] = useState(null);
@@ -70,7 +86,6 @@ export default function FoodInformation ( food ) {
             .then((response) => response.json())
             .then((json) => {
                 setData((json.foods));
-                console.log("I am done fetching!")
                 settingNutrients(json.foods)
                 },
                 (error) => {
@@ -117,14 +132,12 @@ export default function FoodInformation ( food ) {
         setNutrients(x);
         let y = daily_value(foodInfo[0]);
         setFoodgroup(y.category);
+        const docRef = setDoc(doc(db, "users", food.route.params.data), {
+            foodgroup:y.category
+        })
       
 
     }
-    console.log("reder---------------------------------------------------", calciumAmount);
-    useEffect(() => {
-        console.log("I am in useEffect: ", nutrients);
-    }, [nutrients]);
-
     return(
         <SafeAreaView style={styles.screen}>
             <ScrollView 
