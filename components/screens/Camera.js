@@ -22,10 +22,10 @@ import Canvas from 'react-native-canvas';
 
 
 const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bicol Express", "Bulalo", "Champorado",
-                    "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Fried Rice", "Grapes", 
+                    "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Egg", "Fried Rice", "Grapes", 
                     "Halo Halo", "Kaldereta", "Kiwi", "Laing", "Leche Flan", "Lemon", "Liempo", "Longganisa", "Lumpia",
                     "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
-                    "Pork Afritada", "Rambutan", "Sisig", "Tinola", "Turon"]
+                    "Pork Afritada", "Rambutan", "Rice", "Sisig", "Tinola", "Turon"]
 
 const names =   [
                 'Initializing the model...', 'Processing image...', 'Detecting foods...', 'Getting predictions...', 'Converting image input...', 'Calculating detection scores...',

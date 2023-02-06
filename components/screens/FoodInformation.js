@@ -56,9 +56,9 @@ export default function FoodInformation ( food ) {
         setNutrients(x);
     }
 
-    useEffect(() => {
-        console.log("I am in useEffect: ", nutrients);
-    }, [nutrients]);
+    // useEffect(() => {
+    //     console.log("I am in useEffect: ", nutrients);
+    // }, [nutrients]);
 
     return(
         <SafeAreaView style={styles.screen}>
@@ -84,7 +84,7 @@ export default function FoodInformation ( food ) {
                         </View>
                     </View>
                 </View>
-                {
+                {/* {
                 nutrients?
                 <NutritionLabel
                 servingsPerContainer = {nutrients.servingsPerContainer}
@@ -115,7 +115,7 @@ export default function FoodInformation ( food ) {
                 calciumPercentage = {nutrients.calciumPercentage}
                 ironAmount = {nutrients.ironAmount}
                 ironPercentage = {nutrients.ironPercentage}
-                /> : null}
+                /> : null} */}
                 <View style={{height:80}}></View>
             </ScrollView>
         </SafeAreaView>
