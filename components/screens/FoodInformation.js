@@ -134,7 +134,10 @@ export default function FoodInformation ( food ) {
                     <View style={styles.foodNameCategoryContainer}>
                         <Text style={styles.foodName}>{food.route.params.data}</Text>
                         <View style={styles.foodCategoryContainer}>
-                            <Text style={styles.foodCategory}>{foodgroup}</Text>
+                            {console.log(foodgroup)}
+                            {foodgroup === "GO" ? <Text style={styles.foodCategoryGo}>{foodgroup}</Text> : null}
+                            {foodgroup === "GROW" ? <Text style={styles.foodCategoryGrow}>{foodgroup}</Text> : null}
+                            {foodgroup === "GLOW" ? <Text style={styles.foodCategoryGlow}>{foodgroup}</Text> : null}
                             <TouchableOpacity>
                                 <Icon name="help-outline" type="material" size={26} style={styles.helpIcon} />
                             </TouchableOpacity>
@@ -149,9 +152,7 @@ export default function FoodInformation ( food ) {
                         </View>
                     </View>
                 </View>
-                
-                {
-                nutrients?
+                {nutrients?
                 <NutritionLabel
                 servingsPerContainer = {servingsPerContainer}
                 servingUnit = {servingUnit}
@@ -182,7 +183,6 @@ export default function FoodInformation ( food ) {
                 ironAmount = {ironAmount}
                 ironPercentage = {ironPercentage}
                 /> : null}
-                
                 <View style={{height:80}}></View>
             </ScrollView>
         </SafeAreaView>
@@ -218,10 +218,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    foodCategory: {
+    foodCategoryGo: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: colors.yellow_shade_3,
+        marginRight: 10,
+    },
+    foodCategoryGrow: {
         fontWeight: 'bold',
         fontSize: 24,
         color: colors.red_shade_2,
+        marginRight: 10,
+    },
+    foodCategoryGlow: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: colors.green_shade_3,
         marginRight: 10,
     },
     helpIcon: {
