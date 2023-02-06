@@ -45,12 +45,30 @@ export default function MealInformation( props, ){
 
 
     let space = ' ', tempquery = '';
+    let tcq = [];
+
     for(let i=0;i<Object.keys(predictedResult).length;i++){
-        tempquery = tempquery + space + predictedResult[i].label;
+        if(i==0){
+            tempquery = tempquery + space + predictedResult[i].label; 
+            tcq[i] =  predictedResult[i].label;
+        }
+        else{
+            let same = 0;
+            for(let j = 0; j< i; j++){
+                if(tcq[j] == predictedResult[i].label){
+                    same = 1;
+                    break;
+                }
+            }
+            if(same == 0){
+                tempquery = tempquery + space + predictedResult[i].label; 
+                tcq[i] = predictedResult[i].label;
+            }
+        }
     }
 
 
-    
+    console.log('tempquery', tempquery);
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
@@ -58,7 +76,7 @@ export default function MealInformation( props, ){
     header.append('x-app-id', 'b8abbafb')
     header.append('x-app-key', 'ad0ca84860d6a22c96efe16bcf9366d8')
 
-    let jsonQuery = JSON.stringify({"query": "Pork Belly"});
+    let jsonQuery = JSON.stringify({"query": tempquery});
 
     let request = new Request (url, {
         method: 'POST',
@@ -120,19 +138,6 @@ export default function MealInformation( props, ){
             tempgroup[counter] = category;
             tempcateg = category;
         }
-    
-        /*console.log('Temp grouppppppppppppp',tempgroup);
-        if(counter > 0){
-            if(tempcateg == x.category)
-                tempcateg = tempcateg;
-            else{
-                if(x.category != "Cannot Determine")
-                tempcateg = tempcateg + joint + x.category;
-            }
-        }
-        else
-        tempcateg = x.category;
-        */
 
         lack = recommendation(tempcateg);
         setFoodRecommendation(lack.lackgroup);
