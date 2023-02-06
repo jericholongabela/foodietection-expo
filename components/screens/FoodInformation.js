@@ -138,7 +138,8 @@ export default function FoodInformation ( food ) {
                         <Image style={styles.foodImage} source={require("../../assets/splash.png")} resizeMode={'contain'} />
                         <View style={styles.foodDetailsContainer}>
                             <Text style={styles.servingSize}>{servingsPerContainer} {servingUnit} ({servingWeight}g)</Text>
-                            <Text style={styles.caloriesPerServing}>Calories per serving{calories}</Text>
+                            <Text style={styles.caloriesPerServing}>Calories per serving</Text>
+                            <Text style={styles.calories}>{calories}</Text>
                         </View>
                     </View>
                 </View>

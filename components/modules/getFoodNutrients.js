@@ -40,7 +40,7 @@ function getFoodNutrients ( data ) {
     console.log("Next is: servingUnit");
     servingUnit = data[0].serving_unit;
     console.log("Next is: servingWeight");
-    servingWeight = getZeroAmount(data[0].serving_weight_grams);
+    servingWeight = Math.round(getZeroAmount(data[0].serving_weight_grams));
     console.log("Next is: calories");
     calories = Math.round(getZeroAmount(data[0].nf_calories));
     console.log("Next is: totalFatAmount");

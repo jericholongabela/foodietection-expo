@@ -18,6 +18,7 @@ const mealinfoStyles = StyleSheet.create({
     headerStyle: {
         //fontFamily: 'Montserrat-Bold',
         fontSize: 23,
+        fontWeight: 'bold',
         color: colors.primary_white,
     },
 
@@ -35,7 +36,6 @@ const mealinfoStyles = StyleSheet.create({
     boldtextStyle: {
         //fontFamily: 'Montserrat-Bold',
         fontSize: 18,
-        paddingRight: 10,
         color: colors.primary_white,
     },
      
@@ -53,10 +53,9 @@ const mealinfoStyles = StyleSheet.create({
     },
 
     totalCaloriesContainer: {
-        width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.03,
         justifyContent: 'center',
-        paddingLeft: 10,
+        paddingHorizontal: 10,
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -65,17 +64,19 @@ const mealinfoStyles = StyleSheet.create({
     remainingCaloriesTextContainer: {
         width: Dimensions.get('window').width * 0.775,
         height: Dimensions.get('window').height*0.1,
-        paddingRight: 15,
     },
     
     remainingCaloriesContainer: {
-        width: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').height * 0.09,
-        justifyContent: 'center',
         paddingHorizontal: 10,
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+
+    mealLacksContainer: {
+        height: Dimensions.get('window').height * 0.09,paddingHorizontal: 10,
+        marginTop: 10,
     },
 
     scrollContainer: {

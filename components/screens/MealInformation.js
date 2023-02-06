@@ -100,10 +100,6 @@ export default function MealInformation( props, ){
             )
             .finally(() => setLoading(false))    
     }, []);
-
-
-
-
     
     let tempCalories=0;
     function totalCalories(item){
@@ -113,10 +109,6 @@ export default function MealInformation( props, ){
     };
     let counter = 0, joint = ' and ', tempcateg ='', lack, lackfoodss;
     const tempgroup = [];
-
-
-
-
 
     function fuzzyDaily(item){
 
@@ -155,8 +147,7 @@ export default function MealInformation( props, ){
     return (
         <SafeAreaView style={mealinfoStyles.screen}>
             <Header textProps={"Meal Information"} />
-            {/* <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}> */}
-            <View>
+            <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={mealinfoStyles.mealThumbContainer}>
                     <View style={mealinfoStyles.mealThumbSecondContainer}>
                         <Image source={"../assets/images/DOST_FNRI_logo.png"} style={mealinfoStyles.thumbnailImage} resizeMode={'contain'}/> 
@@ -201,46 +192,31 @@ export default function MealInformation( props, ){
                 /> */}
                 <View name='Summary' style={mealinfoStyles.summaryContainer}>
                     <View style={mealinfoStyles.summaryBorder}>
-                        <Text style={mealinfoStyles.headerStyle}>
-                            Summary:
-                        </Text>
+                        <Text style={mealinfoStyles.headerStyle}>Summary:</Text>
                     </View> 
                     {/* meal info goes here. */}
                     <View style={mealinfoStyles.totalCaloriesContainer}>
-                        <Text style={mealinfoStyles.boldtextStyle}>
-                            Total Calories:     
-                        </Text>
-                        <Text style={mealinfoStyles.boldtextStyle}>
-                            {calories}  {/* Fetches the value of calories */}    
-                        </Text>
+                        <Text style={mealinfoStyles.boldtextStyle}>Total Calories:</Text>
+                        <Text style={mealinfoStyles.boldtextStyle}>{calories}{/* Fetches the value of calories */}</Text>
                     </View>
                     <View style={mealinfoStyles.remainingCaloriesContainer}>
                         <View style={mealinfoStyles.remainingCaloriesTextContainer}>
-                            <Text style={mealinfoStyles.boldtextStyle}>
-                                Remaining suggested calories to be intaked for today:
-                            </Text>
+                            <Text style={mealinfoStyles.boldtextStyle}>Remaining suggested calories to be intaked for today:</Text>
                         </View>
-                        <View style={mealinfoStyles.textContainer}>
-                            <Text style={mealinfoStyles.boldtextStyle}>
-                                {2000-calories}  {/* Fetches the value of remaining calories */}
-                            </Text>
-                        </View>
+                        <Text style={mealinfoStyles.boldtextStyle}>{2530-calories}{/* Fetches the value of remaining calories */}</Text>
+
                     </View> 
-                    <View style={mealinfoStyles.headerContainer}>
-                        <Text style={mealinfoStyles.boldtextStyle}>
-                        Your meal lacks a 
-                        <Text style={mealinfoStyles.glowinnerText}> {foodrecommendation}</Text>
+                    <View style={mealinfoStyles.mealLacksContainer}>
+                        <Text style={mealinfoStyles.boldtextStyle}>Your meal lacks <Text style={mealinfoStyles.glowinnerText}> {foodrecommendation}</Text>
                         <Text style={mealinfoStyles.boldtextStyle}> food</Text>
                         </Text>
                         <Text style={mealinfoStyles.ReminderboldtextStyle}>Reminder:</Text>
-                        <Text style={mealinfoStyles.boldtextStyle}>
-                        {reminder}
-                        </Text>
+                        <Text style={mealinfoStyles.boldtextStyle}>{reminder}</Text>
                         <ViewSuggestion/>
                     </View>
                 </View>
-            {/* </ScrollView> */}
-            </View>
+            </ScrollView>
+            <View style={{height: 40}}></View>
         </SafeAreaView>
     )
 }
