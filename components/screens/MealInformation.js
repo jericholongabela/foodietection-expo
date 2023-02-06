@@ -58,7 +58,7 @@ export default function MealInformation( props, ){
     header.append('x-app-id', 'b8abbafb')
     header.append('x-app-key', 'ad0ca84860d6a22c96efe16bcf9366d8')
 
-    let jsonQuery = JSON.stringify({"query": tempquery});
+    let jsonQuery = JSON.stringify({"query": "Pork Belly"});
 
     let request = new Request (url, {
         method: 'POST',

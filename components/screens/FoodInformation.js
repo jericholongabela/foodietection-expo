@@ -16,12 +16,43 @@ export default function FoodInformation ( food ) {
     let [data, setData] = useState();
     let [error, setError] = useState();
 
+    let [calciumAmount, setcalciumAmount] = useState();
+    let [calciumPercentage, setcalciumPercentage] = useState();
+    let [calories, setcalories] = useState();
+    let [cholesterolAmount, setcholesterolAmount] = useState();
+    let [cholesterolPercentage, setcholesterolPercentage] = useState();
+    let [dietaryFiberAmount, setdietaryFiberAmount] = useState();
+    let [dietaryFiberPercentage, setdietaryFiberPercentage] = useState();
+    let [ironAmount, setironAmount] = useState();
+    let [ironPercentage, setironPercentage] = useState();
+    let [proteinAmount, setproteinAmount] = useState();
+    let [saturatedFatAmount, setsaturatedFatAmount] = useState();
+    let [servingUnit, setservingUnit] = useState();
+    let [servingWeight, setservingWeight] = useState();
+    let [servingsPerContainer, setservingsPerContainer] = useState();
+    let [sodiumAmount, setsodiumAmount] = useState();
+    let [sodiumPercentage, setsodiumPercentage] = useState();
+    let [totalCarbohydrateAmount, settotalCarbohydrateAmount] = useState();
+    let [totalCarbohydratePercentage, settotalCarbohydratePercentage] = useState();
+    let [totalFatAmount, settotalFatAmount] = useState();
+    let [totalFatPercentage, settotalFatPercentage] = useState();
+    let [totalSugarsAmount, settotalSugarsAmount] = useState();
+    let [totalSugarsPercentage, settotalSugarsPercentage] = useState();
+    let [transFatAmount, settransFatAmount] = useState();
+    let [vitaminAAmount, setvitaminAAmount] = useState();
+    let [vitaminAPercentage, setvitaminAPercentage] = useState();
+    let [vitaminCAmount, setvitaminCAmount] = useState();
+    let [vitaminCPercentage, setvitaminCPercentage] = useState();
+
+
+
+
     // API Endpoints
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
     header.append('Content-Type', 'application/json')
-    header.append('x-app-id', 'dc8f2b01')
-    header.append('x-app-key', '7ca38ca16b834b43a0242fd71259adb5')
+    header.append('x-app-id', 'b8abbafb')
+    header.append('x-app-key', 'ad0ca84860d6a22c96efe16bcf9366d8')
 
     let jsonQuery = JSON.stringify({"query": food.route.params.data});
 
@@ -52,10 +83,38 @@ export default function FoodInformation ( food ) {
 
     function settingNutrients (foodInfo) {
         let x = getFoodNutrients(foodInfo);
-        console.log("I am x: ", x);
+        setcalciumAmount(x.calciumAmount);
+        setcalciumPercentage(x.calciumPercentage);
+
+        setcalories(x.calories);
+        setcholesterolAmount(x.cholesterolAmount)
+        setcholesterolPercentage(x.cholesterolPercentage);
+        setdietaryFiberAmount(x.dietaryFiberAmount);
+        setdietaryFiberPercentage(x.dietaryFiberPercentage);
+        setironAmount(x.ironAmount);
+        setironPercentage(x.ironPercentage);
+        setproteinAmount(x.proteinAmount);
+        setsaturatedFatAmount(x.saturatedFatAmount);
+        setservingUnit(x.servingUnit);
+        setservingWeight(x.servingWeight);
+        setservingsPerContainer(x.servingsPerContainer);
+        setsodiumAmount(x.sodiumAmount);
+        setsodiumPercentage(x.sodiumPercentage);
+        settotalCarbohydrateAmount(x.totalCarbohydrateAmount);
+        settotalCarbohydratePercentage(x.totalCarbohydratePercentage);
+        settotalFatAmount(x.totalFatAmount);
+        settotalFatPercentage(x.totalFatPercentage);
+        settotalSugarsAmount(x.totalSugarsAmount);
+        settotalSugarsPercentage(x.totalSugarsPercentage);
+        settransFatAmount(x.transFatAmount);
+        setvitaminAAmount(x.vitaminAAmount);
+        setvitaminAPercentage(x.vitaminAPercentage);
+        setvitaminCAmount(x.vitaminCAmount);
+        setvitaminCPercentage(x.vitaminCPercentage);
+        
         setNutrients(x);
     }
-
+    console.log("reder---------------------------------------------------", calciumAmount);
     useEffect(() => {
         console.log("I am in useEffect: ", nutrients);
     }, [nutrients]);
@@ -76,46 +135,47 @@ export default function FoodInformation ( food ) {
                         </View>
                     </View>
                     <View style={styles.foodImageDetailsContainer}>
-                        <Image style={styles.foodImage} source={require("../../assets/splash.png")} resizeMethod={"contain"} />
+                        <Image style={styles.foodImage} source={require("../../assets/splash.png")} resizeMode={'contain'} />
                         <View style={styles.foodDetailsContainer}>
-                            <Text style={styles.servingSize}>{nutrients.servingsPerContainer} {nutrients.servingUnit} ({nutrients.servingWeight}g)</Text>
-                            <Text style={styles.caloriesPerServing}>Calories per serving</Text>
-                            <Text style={styles.calories}>{nutrients.calories}</Text>
+                            <Text style={styles.servingSize}>{servingsPerContainer} {servingUnit} ({servingWeight}g)</Text>
+                            <Text style={styles.caloriesPerServing}>Calories per serving{calories}</Text>
                         </View>
                     </View>
                 </View>
+                
                 {
                 nutrients?
                 <NutritionLabel
-                servingsPerContainer = {nutrients.servingsPerContainer}
-                servingUnit = {nutrients.servingUnit}
-                servingWeight = {nutrients.servingWeight}
-                calories = {nutrients.calories}
-                totalFatAmount = {nutrients.totalFatAmount}
-                totalFatPercentage = {nutrients.totalFatPercentage}
-                saturatedFatAmount = {nutrients.saturatedFatAmount}
+                servingsPerContainer = {servingsPerContainer}
+                servingUnit = {servingUnit}
+                servingWeight = {servingWeight}
+                calories = {calories}
+                totalFatAmount = {totalFatAmount}
+                totalFatPercentage = {totalFatPercentage}
+                saturatedFatAmount = {saturatedFatAmount}
                 saturatedFatPercentage = {""}
-                transFatAmount = {nutrients.transFatAmount}
-                cholesterolAmount = {nutrients.cholesterolAmount}
-                cholesterolPercentage = {nutrients.cholesterolPercentage}
-                sodiumAmount = {nutrients.sodiumAmount}
-                sodiumPercentage = {nutrients.sodiumPercentage}
-                totalCarbohydrateAmount = {nutrients.totalCarbohydrateAmount}
-                totalCarbohydratePercentage = {nutrients.totalCarbohydratePercentage}
-                dietaryFiberAmount = {nutrients.dietaryFiberAmount}
-                dietaryFiberPercentage = {nutrients.dietaryFiberPercentage}
-                totalSugarsAmount = {nutrients.totalSugarsAmount}
+                transFatAmount = {transFatAmount}
+                cholesterolAmount = {cholesterolAmount}
+                cholesterolPercentage = {cholesterolPercentage}
+                sodiumAmount = {sodiumAmount}
+                sodiumPercentage = {sodiumPercentage}
+                totalCarbohydrateAmount = {totalCarbohydrateAmount}
+                totalCarbohydratePercentage = {totalCarbohydratePercentage}
+                dietaryFiberAmount = {dietaryFiberAmount}
+                dietaryFiberPercentage = {dietaryFiberPercentage}
+                totalSugarsAmount = {totalSugarsAmount}
                 totalSugarsPercentage = {""}
-                proteinAmount = {nutrients.proteinAmount}
-                vitaminAAmount = {nutrients.vitaminAAmount}
-                vitaminAPercentage = {nutrients.vitaminAPercentage}
-                vitaminCAmount = {nutrients.vitaminCAmount}
-                vitaminCPercentage = {nutrients.vitaminCPercentage}
-                calciumAmount = {nutrients.calciumAmount}
-                calciumPercentage = {nutrients.calciumPercentage}
-                ironAmount = {nutrients.ironAmount}
-                ironPercentage = {nutrients.ironPercentage}
+                proteinAmount = {proteinAmount}
+                vitaminAAmount = {vitaminAAmount}
+                vitaminAPercentage = {vitaminAPercentage}
+                vitaminCAmount = {vitaminCAmount}
+                vitaminCPercentage = {vitaminCPercentage}
+                calciumAmount = {calciumAmount}
+                calciumPercentage = {calciumPercentage}
+                ironAmount = {ironAmount}
+                ironPercentage = {ironPercentage}
                 /> : null}
+                
                 <View style={{height:80}}></View>
             </ScrollView>
         </SafeAreaView>
