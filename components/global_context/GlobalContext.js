@@ -9,6 +9,7 @@ const Provider = ( { children } ) => {
     const [ predictedResult, setPredictedResult ] = useState([]);
     const [ foodrecommendation,setFoodRecommendation] = useState([]);
     const [ nutrients, setNutrients ] = useState();
+    const [ help, setHelpToggle ] = useState(false);
 
     const globalContext = {
         galleryPhoto,
@@ -21,6 +22,8 @@ const Provider = ( { children } ) => {
         setPredictedResult,
         foodrecommendation,
         setFoodRecommendation,
+        help,
+        setHelpToggle,
     }
 
     return <Context.Provider value={globalContext}>

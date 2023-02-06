@@ -146,7 +146,6 @@ export default function MealInformation( props, ){
     };
     return (
         <SafeAreaView style={mealinfoStyles.screen}>
-            <Header textProps={"Meal Information"} />
             <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={mealinfoStyles.mealThumbContainer}>
                     <View style={mealinfoStyles.mealThumbSecondContainer}>

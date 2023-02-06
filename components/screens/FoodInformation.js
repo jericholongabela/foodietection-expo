@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Dimensions, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import NutritionLabel from "../modules/nutritionlabel";
@@ -11,9 +11,12 @@ import daily_value from "../fuzzy/daily_value";
 
 import {initializeApp} from 'firebase/app';
 import {getFirestore, setDoc, collection, doc, getDocs} from 'firebase/firestore';
-
+import HelpOverlay from "../modules/help";
+import { Context } from "../global_context/GlobalContext";
 
 export default function FoodInformation ( food ) {
+
+    const { help, setHelpToggle } = useContext(Context);
 
     const firebaseConfig = {
         apiKey: "AIzaSyBdARsXA0l_w4DJPBLqrf9lVlOzd1keZz8",
@@ -61,7 +64,7 @@ export default function FoodInformation ( food ) {
     let [vitaminCAmount, setvitaminCAmount] = useState();
     let [vitaminCPercentage, setvitaminCPercentage] = useState();
     let [foodgroup, setFoodgroup]  = useState();
-
+    let [image, setImage] = useState();
 
 
 
@@ -69,8 +72,8 @@ export default function FoodInformation ( food ) {
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
     let header = new Headers ();
     header.append('Content-Type', 'application/json')
-    header.append('x-app-id', 'b8abbafb')
-    header.append('x-app-key', 'ad0ca84860d6a22c96efe16bcf9366d8')
+    header.append('x-app-id', '2e027ee6')
+    header.append('x-app-key', '37205a1771d3cf18f8a82df5d923aade')
 
     let jsonQuery = JSON.stringify({"query": food.route.params.data});
 
@@ -136,8 +139,11 @@ export default function FoodInformation ( food ) {
             foodgroup:y.category
         })
       
-
+        console.log("foodinfo.photo.thumb", foodInfo[0].photo.thumb)
+        setImage(foodInfo[0].photo.thumb)
     }
+
+    // console.log("data.photo", data[0].photo.thumb)
     return(
         <SafeAreaView style={styles.screen}>
             <ScrollView 
@@ -147,17 +153,17 @@ export default function FoodInformation ( food ) {
                     <View style={styles.foodNameCategoryContainer}>
                         <Text style={styles.foodName}>{food.route.params.data}</Text>
                         <View style={styles.foodCategoryContainer}>
-                            {console.log(foodgroup)}
                             {foodgroup === "GO" ? <Text style={styles.foodCategoryGo}>{foodgroup}</Text> : null}
                             {foodgroup === "GROW" ? <Text style={styles.foodCategoryGrow}>{foodgroup}</Text> : null}
                             {foodgroup === "GLOW" ? <Text style={styles.foodCategoryGlow}>{foodgroup}</Text> : null}
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => setHelpToggle(!help) }>
                                 <Icon name="help-outline" type="material" size={26} style={styles.helpIcon} />
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.foodImageDetailsContainer}>
-                        <Image style={styles.foodImage} source={require("../../assets/splash.png")} resizeMode={'contain'} />
+                        {image ? <Image style={styles.foodImage} source={{ uri : image}} resizeMode={'contain'} />
+                        : null}
                         <View style={styles.foodDetailsContainer}>
                             <Text style={styles.servingSize}>{servingsPerContainer} {servingUnit} ({servingWeight}g)</Text>
                             <Text style={styles.caloriesPerServing}>Calories per serving</Text>
@@ -196,6 +202,7 @@ export default function FoodInformation ( food ) {
                 ironAmount = {ironAmount}
                 ironPercentage = {ironPercentage}
                 /> : null}
+                {help? <HelpOverlay foodGroup={foodgroup} / > : null}
                 <View style={{height:80}}></View>
             </ScrollView>
         </SafeAreaView>

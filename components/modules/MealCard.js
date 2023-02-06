@@ -9,10 +9,13 @@ import searchStyles from '../../assets/styles/search';
 import SearchResult from './searchResult';
 import { Context } from "../global_context/GlobalContext";
 import recommendation from '../fuzzy/foodlist';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MealCard({foodName, foodCategory, foodServing, foodServingUnit, foodServingWeight, foodCalories, foodImage, totalCalories}){
+    const navigation = useNavigation();
+
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Food Information", { data: foodName})}>
             <View style={styles.cardContainer}>
                 <View style={styles.topPartContainer}>
                     <Text style={styles.textStyle}>{foodName}</Text>
