@@ -21,6 +21,7 @@ example:
 
 function daily_value(json) {
   let calories_from_fat = Math.round(json.nf_total_fat * 9 );
+
   let total_fat = Math.round(json.nf_total_fat / 65 * 100);
   let saturated_fat = Math.round(json.nf_saturated_fat / 20 * 100);
   let cholesterol = Math.round(json.nf_cholesterol / 300 * 100 );
