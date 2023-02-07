@@ -66,8 +66,7 @@ export default function MealInformation( props, ){
             }
         }
     }
-
-
+   
     console.log('tempquery', tempquery);
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients?'
