@@ -154,6 +154,21 @@ export default function FoodInformation ( food ) {
                         <Text style={styles.foodName}>{food.route.params.data}</Text>
                         <View style={styles.foodCategoryContainer}>
                             {foodgroup === "GO" ? <Text style={styles.foodCategoryGo}>{foodgroup}</Text> : null}
+                            {foodgroup === "GO and GROW" ?
+                            <Text style={{fontWeight: 'bold', fontSize: 24, marginRight: 10}}>
+                                <Text style={{color: colors.yellow_shade_3}}>GO</Text>,
+                                <Text style={{color: colors.red_shade_1}}> GROW</Text>
+                            </Text>: null}
+                            {foodgroup === "GO and GLOW" ?
+                            <Text style={{fontWeight: 'bold', fontSize: 24, marginRight: 10}}>
+                                <Text style={{color: colors.yellow_shade_3}}>GO</Text>,
+                                <Text style={{color: colors.green_shade_3}}> GLOW</Text>
+                            </Text>: null}
+                            {foodgroup === "GROW and GLOW" ?
+                            <Text style={{fontWeight: 'bold', fontSize: 24, marginRight: 10}}>
+                                <Text style={{color: colors.red_shade_1}}>GROW</Text>,
+                                <Text style={{color: colors.green_shade_3}}> GLOW</Text>
+                            </Text>: null}
                             {foodgroup === "GROW" ? <Text style={styles.foodCategoryGrow}>{foodgroup}</Text> : null}
                             {foodgroup === "GLOW" ? <Text style={styles.foodCategoryGlow}>{foodgroup}</Text> : null}
                             <TouchableOpacity onPress={() => setHelpToggle(!help) }>
