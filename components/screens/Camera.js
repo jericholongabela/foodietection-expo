@@ -164,6 +164,7 @@ export default function Cam(){
             //setLoadingText('Detecting foods...');
             setIsPredicting(true);
             await processImagePrediction(result.assets[0]);
+            setLoadingText("Loading");
         } else {
             console.log("Image selection cancelled")
         }

@@ -112,15 +112,13 @@ export function ViewSuggestion({ foodCategory }){
 
 const styles = StyleSheet.create({
     cardContainer: {
-        height: Dimensions.get('window').height * 0.20,
+        height: Dimensions.get('window').height * 0.3,
         width: Dimensions.get('window').width * 0.9,
         backgroundColor: colors.primary_white,
         margin: 10,
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 10,
-        borderWidth: 2,
-        borderColor: colors.gray_shade_1
     }, 
     textStyle: {
         //fontFamily: 'Montserrat-Bold',
