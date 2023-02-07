@@ -23,8 +23,8 @@ import Canvas from 'react-native-canvas';
 
 const FOOD_CLASSES = ["Apple", "Arroz Caldo", "Avocado", "Balut", "Banana", "Bicol Express", "Bulalo", "Champorado",
                     "Cherry", "Chicharon", "Chicken Adobo", "Chicken Wings", "Crispy Pata", "Egg", "Fried Rice", "Grapes", 
-                    "Halo Halo", "Kaldereta", "Kiwi", "Laing", "Leche Flan", "Lemon", "Liempo", "Longganisa", "Lumpia",
-                    "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork", "Adobo",
+                    "Halo Halo", "Kaldereta", "Kiwi", "Laing", "Leche Flan", "Lechon", "Lemon", "Pork Belly", "Longganisa", "Lumpia",
+                    "Mango", "Orange", "Pancit", "Pandesal", "Papaya", "Pear", "Pinakbet", "Pineapple", "Pork Adobo",
                     "Pork Afritada", "Rambutan", "Rice", "Sisig", "Tinola", "Turon"]
 
 const names =   [
