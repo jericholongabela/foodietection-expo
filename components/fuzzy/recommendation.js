@@ -12,8 +12,8 @@ function recommendation(category) {
         food1 = getglow();
         food2 = getgo();
         foods = food2.concat(food1);
-        lackgroup = 'GLOW and GO';
-        reminder = "Good day! It appears that your meal lacks Go and Glow foods, thus we advise eating meals high in vitamins, minerals, and carbohydrates to complete your wholesome meal.";
+        lackgroup = 'GO and GLOW';
+        reminder = "It appears that your meal lacks Go and Glow foods, thus we advise eating meals high in vitamins, minerals, and carbohydrates to complete your wholesome meal.";
     }
     if(category == 'GO'){
         food1 = getglow();

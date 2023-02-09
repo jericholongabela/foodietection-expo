@@ -35,7 +35,6 @@ const names =   [
 export default function Cam(){
     const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
     const [ hasMediaLibraryPermission, setHasMediaLibraryPermission ] = useState();
-    const [ image, setImage ] = useState(null);
     const [ type, setType ] = useState(Camera.Constants.Type.back);
     const cameraRef = useRef(null);
     const [ isPredicting, setIsPredicting ] = useState(false);
@@ -50,6 +49,7 @@ export default function Cam(){
 
     // globalcontexts
     const { predictedResult, setPredictedResult } = useContext(Context);
+    const { image, setImage } = useContext(Context);
 
     const ref = useRef(null);
     const imgRef = useRef(null);

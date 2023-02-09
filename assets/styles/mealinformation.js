@@ -140,7 +140,6 @@ const mealinfoStyles = StyleSheet.create({
     mealThumbSecondContainer: {
         height: Dimensions.get('window').height * 0.05,
         width: Dimensions.get('window').width * 0.1,
-        paddingLeft: 10,
         backgroundColor: colors.beige,
     },
 
@@ -148,12 +147,14 @@ const mealinfoStyles = StyleSheet.create({
         //fontFamily: 'Montserrat',
         fontSize: 16,
         paddingLeft: 20,
+        paddingVertical: 10,
         color: colors.primary_black,
     },
 
     thumbnailImage: {
         height: Dimensions.get('window').height * 0.05,
         width: Dimensions.get('window').width * 0.1,
+        resizeMode: 'cover',
     },
 });
 

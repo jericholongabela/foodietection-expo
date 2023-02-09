@@ -10,6 +10,7 @@ import recommendation from '../fuzzy/recommendation';
 
 import {initializeApp} from 'firebase/app';
 import {getFirestore, setDoc, collection, doc, getDocs} from 'firebase/firestore';
+import colors from '../../assets/styles/colors';
 
 export default function MealInformation( props, ){
     const firebaseConfig = {
@@ -33,15 +34,13 @@ export default function MealInformation( props, ){
     const [calories, setCalories] = useState(0);
     const [filename, setFilename] = useState();
     let category;
-    const [lackfood, setLackFood] = useState();
     const [reminder, setReminder] = useState();
-    const [lackfoods, setLackFoods] = useState();
-    const [ query, setQuery ] = useState([]);
     let [isLoading, setLoading] = useState(true);
     let [error, setError] = useState();
 
     const { predictedResult, setPredictedResult } = useContext(Context);
     const { foodrecommendation, setFoodRecommendation} = useContext(Context);
+    const { image, setImage } = useContext(Context);
 
 
     let space = ' ', tempquery = '';
@@ -148,9 +147,9 @@ export default function MealInformation( props, ){
             <ScrollView nestedScrollEnabled={true} style={mealinfoStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={mealinfoStyles.mealThumbContainer}>
                     <View style={mealinfoStyles.mealThumbSecondContainer}>
-                        <Image source={"../assets/images/DOST_FNRI_logo.png"} style={mealinfoStyles.thumbnailImage} resizeMode={'contain'}/> 
+                        <Image source={{uri : image}} style={mealinfoStyles.thumbnailImage}/> 
                     </View>
-                    <Text style={mealinfoStyles.mealThumbText}>{filename}</Text>
+                    <Text style={mealinfoStyles.mealThumbText}>{image}</Text>
                 </View>
                 <View name='Your Meal Contains'>
                     <View style={mealinfoStyles.headerContainer}>
@@ -164,7 +163,7 @@ export default function MealInformation( props, ){
                     totalCalories(item),
                     fuzzyDaily(item),
                     <MealCard 
-                    foodName={item.food_name} 
+                    foodName={item.food_name.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())} 
                     foodCategory={category}
                     foodServing={item.serving_qty}
                     foodServingUnit={item.serving_unit}
@@ -174,6 +173,22 @@ export default function MealInformation( props, ){
                     />
                 )}
                 />
+                {/* {foodData.map((item, index) => {
+                    totalCalories(item);
+                    fuzzyDaily(item);
+                    return (
+                        <MealCard
+                            key={index}
+                            foodName={item.food_name} 
+                            foodCategory={category}
+                            foodServing={item.serving_qty}
+                            foodServingUnit={item.serving_unit}
+                            foodServingWeight={item.serving_weight_grams}
+                            foodCalories={item.nf_calories}
+                            foodImage={item.photo.thumb}
+                        />
+                    )
+                })} */}
                 {/* <MealCard 
                         foodName={'Rice'}
                         foodCategory={'Go'}
@@ -205,12 +220,11 @@ export default function MealInformation( props, ){
 
                     </View> 
                     <View style={mealinfoStyles.mealLacksContainer}>
-                        <Text style={mealinfoStyles.boldtextStyle}>Your meal lacks <Text style={mealinfoStyles.glowinnerText}> {foodrecommendation}</Text>
-                        <Text style={mealinfoStyles.boldtextStyle}> food</Text>
-                        </Text>
-                        <Text style={mealinfoStyles.ReminderboldtextStyle}>Reminder:</Text>
-                        <Text style={mealinfoStyles.boldtextStyle}>{reminder}</Text>
-                        <ViewSuggestion/>
+                        <Text style={mealinfoStyles.boldtextStyle}>Your meal lacks 
+                            <Text style={mealinfoStyles.glowinnerText}> {foodrecommendation}</Text>
+                            <Text style={mealinfoStyles.boldtextStyle}> food</Text>
+                            </Text>
+                        <ViewSuggestion inputText={reminder}/>
                     </View>
                 </View>
             </ScrollView>
