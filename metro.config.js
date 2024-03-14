@@ -5,18 +5,26 @@
  * @format
  */
 
-module.exports = {
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: false,
-      },
-    }),
-  },
-  resolver: {
-    // (add 'bin' to assetExts)
-    assetExts: ['bin', 'txt', 'jpg', 'png', 'ttf'],
-    sourceExts: ['js', 'json', 'ts', 'tsx', 'jsx'],
-  },
-};
+// module.exports = {
+//   transformer: {
+//     getTransformOptions: async () => ({
+//       transform: {
+//         experimentalImportSupport: false,
+//         inlineRequires: false,
+//       },
+//     }),
+//   },
+//   resolver: {
+//     // (add 'bin' to assetExts)
+//     assetExts: ['bin', 'txt', 'jpg', 'png', 'ttf'],
+//     sourceExts: ['js', 'json', 'ts', 'tsx', 'jsx'],
+//   },
+// };
+
+const { getDefaultConfig } = require('expo/metro-config');
+
+const config = getDefaultConfig(__dirname);
+
+config.resolver.assetExts.push('bin');
+ 
+module.exports = config;
